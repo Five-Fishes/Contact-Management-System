@@ -46,8 +46,10 @@ public class MUI extends JFrame {
     private String str;
     private Command addCommand;
     private Command deleteCommand;
+    private Command searchCommand;
     private AddButton addButton;
     private DeleteButton deleteButton;
+    private SearchButton searchButton;
     private Invoker invoker;
 
     public void setMg(MUI mg) {
@@ -191,11 +193,14 @@ public class MUI extends JFrame {
 
         addButton = new AddButton();
         deleteButton = new DeleteButton();
+        searchButton = new SearchButton();
         addCommand = new AddCommand(addButton);
         deleteCommand = new DeleteCommand(deleteButton);
+        searchCommand = new SearchCommand(searchButton);
 
         invoker.setCommand("add",addCommand);
         invoker.setCommand("delete",deleteCommand);
+        invoker.setCommand("search", searchCommand);
     }
 
     public final void setUpTableData() {
@@ -1092,12 +1097,20 @@ public class MUI extends JFrame {
         this.flag = flag;
     }
 
+    public void setStr(String str) {
+        this.str = str;
+    }
+
     public void setDFlag(boolean dflag) {
         this.dflag = dflag;
     }
 
     public void setX (int x) {
         this.x = x;
+    }
+
+    public JTextPane getDetails() {
+        return details;
     }
 
     public static MUI getInstance() {
