@@ -4,15 +4,15 @@ import java.awt.event.ActionEvent;
 
 public class BackToMainMenuCommand implements Command{
 
-    BackToMainMenuReceiver backToMainMenuReceiver;
+    NavigateReceiver navigateReceiver;
 
-    public BackToMainMenuCommand (BackToMainMenuReceiver backToMainMenuReceiver){
-        this.backToMainMenuReceiver = backToMainMenuReceiver;
+    public BackToMainMenuCommand (NavigateReceiver navigateReceiver){
+        this.navigateReceiver = navigateReceiver;
     }
 
     @Override
     public void execute(ActionEvent evt) {
-        backToMainMenuReceiver.backToMainMenu();
+        navigateReceiver.backToMainMenu();
     }
 
     @Override

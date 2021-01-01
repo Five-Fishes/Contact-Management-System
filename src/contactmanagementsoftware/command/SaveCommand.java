@@ -3,15 +3,16 @@ package contactmanagementsoftware.command;
 import java.awt.event.ActionEvent;
 
 public class SaveCommand implements Command {
-    SaveReceiver saveReceiver;
 
-    public SaveCommand(SaveReceiver saveReceiver){
-        this.saveReceiver = saveReceiver;
+    ContactReceiver contactReceiver;
+
+    public SaveCommand(ContactReceiver contactReceiver){
+        this.contactReceiver = contactReceiver;
     }
 
     @Override
     public void execute(ActionEvent evt) {
-        saveReceiver.save();
+        contactReceiver.saveContacts();
     }
 
     @Override

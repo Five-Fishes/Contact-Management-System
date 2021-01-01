@@ -4,15 +4,15 @@ import java.awt.event.ActionEvent;
 
 public class ExitCommand implements  Command{
 
-    ExitReceiver exitReceiver;
+    NavigateReceiver navigateReceiver;
 
-    public ExitCommand(ExitReceiver exitReceiver) {
-        this.exitReceiver = exitReceiver;
+    public ExitCommand(NavigateReceiver navigateReceiver) {
+        this.navigateReceiver = navigateReceiver;
     }
 
     @Override
     public void execute(ActionEvent evt) {
-        exitReceiver.exit();
+        navigateReceiver.exit();
     }
 
     @Override

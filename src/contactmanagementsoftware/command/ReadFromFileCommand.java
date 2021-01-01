@@ -4,15 +4,15 @@ import java.awt.event.ActionEvent;
 
 public class ReadFromFileCommand implements Command{
 
-    ReadFromFileReceiver readFromFileReceiver;
+    ContactReceiver contactReceiver;;
 
-    public ReadFromFileCommand(ReadFromFileReceiver readFromFileReceiver){
-        this.readFromFileReceiver = readFromFileReceiver;
+    public ReadFromFileCommand(ContactReceiver contactReceiver){
+        this.contactReceiver = contactReceiver;
     }
 
     @Override
     public void execute(ActionEvent evt) {
-        readFromFileReceiver.readFromFile();
+        contactReceiver.uploadContacts();
     }
 
     @Override

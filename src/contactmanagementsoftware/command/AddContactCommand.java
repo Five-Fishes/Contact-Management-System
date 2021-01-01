@@ -3,15 +3,15 @@ package contactmanagementsoftware.command;
 import java.awt.event.ActionEvent;
 
 public class AddContactCommand implements Command{
-    AddContactReceiver addContactReceiver;
+    ContactReceiver contactReceiver;
 
-    public AddContactCommand(AddContactReceiver addContactReceiver){
-        this.addContactReceiver = addContactReceiver;
+    public AddContactCommand(ContactReceiver contactReceiver){
+        this.contactReceiver = contactReceiver;
     }
 
     @Override
     public void execute(ActionEvent evt) {
-        addContactReceiver.addContact();
+        contactReceiver.addContact();
     }
 
     @Override

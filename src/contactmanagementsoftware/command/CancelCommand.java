@@ -3,16 +3,16 @@ package contactmanagementsoftware.command;
 import java.awt.event.ActionEvent;
 
 public class CancelCommand implements Command{
-    CancelReceiver cancelReceiver;
+    NavigateReceiver navigateReceiver;
 
-    public CancelCommand (CancelReceiver cancelReceiver) {
-        this.cancelReceiver = cancelReceiver;
+    public CancelCommand (NavigateReceiver navigateReceiver) {
+        this.navigateReceiver = navigateReceiver;
 
     }
 
     @Override
     public void execute(ActionEvent evt) {
-        cancelReceiver.cancel();
+        navigateReceiver.cancel();
     }
 
     @Override

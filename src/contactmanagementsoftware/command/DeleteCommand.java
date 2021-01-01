@@ -4,15 +4,15 @@ import java.awt.event.ActionEvent;
 
 public class DeleteCommand implements Command{
 
-    DeleteReceiver deleteReceiver;
+    ContactReceiver contactReceiver;
 
-    public DeleteCommand (DeleteReceiver deleteReceiver) {
-        this.deleteReceiver = deleteReceiver;
+    public DeleteCommand (ContactReceiver contactReceiver) {
+        this.contactReceiver = contactReceiver;
     }
 
     @Override
     public void execute(ActionEvent evt) {
-        deleteReceiver.deleteEntry(evt);
+        contactReceiver.deleteContact();
     }
 
     @Override

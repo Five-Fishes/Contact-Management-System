@@ -44,6 +44,8 @@ public class MUI extends JFrame {
     private Command backToMainMenuCommand;
     private Command readFromFileCommand;
     private Command saveCommand;
+    private ContactReceiver contactReceiver;
+    private NavigateReceiver navigateReceiver;
     private Invoker invoker;
 
 
@@ -181,17 +183,20 @@ public class MUI extends JFrame {
     }
 
     public void loadCommands(){
-        addCommand = new AddCommand(new AddReceiver());
-        deleteCommand = new DeleteCommand(new DeleteReceiver());
-        searchCommand = new SearchCommand(new SearchReceiver());
-        exitCommand = new ExitCommand(new ExitReceiver());
-        editCommand = new EditCommand(new EditReceiver());
-        vfdCommand = new VFDCommand(new VFDReceiver());
-        addContactCommand = new AddContactCommand(new AddContactReceiver());
-        cancelCommand = new CancelCommand(new CancelReceiver());
-        backToMainMenuCommand = new BackToMainMenuCommand(new BackToMainMenuReceiver());
-        readFromFileCommand = new ReadFromFileCommand(new ReadFromFileReceiver());
-        saveCommand = new SaveCommand(new SaveReceiver());
+        contactReceiver = new ContactReceiver();
+        navigateReceiver = new NavigateReceiver();
+
+        addContactCommand = new AddContactCommand(contactReceiver);
+        deleteCommand = new DeleteCommand(contactReceiver);
+        searchCommand = new SearchCommand(contactReceiver);
+        editCommand = new EditCommand(contactReceiver);
+        vfdCommand = new VFDCommand(contactReceiver);
+        readFromFileCommand = new ReadFromFileCommand(contactReceiver);
+        saveCommand = new SaveCommand(contactReceiver);
+        addCommand = new AddCommand(navigateReceiver);
+        backToMainMenuCommand = new BackToMainMenuCommand(navigateReceiver);
+        cancelCommand = new CancelCommand(navigateReceiver);
+        exitCommand = new ExitCommand(navigateReceiver);
 
         invoker.setCommand("add",addCommand);
         invoker.setCommand("delete",deleteCommand);

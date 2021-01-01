@@ -4,15 +4,15 @@ import java.awt.event.ActionEvent;
 
 public class AddCommand implements Command{
 
-    AddReceiver addReceiver;
+    NavigateReceiver navigateReceiver;
 
-    public AddCommand(AddReceiver addReceiver){
-        this.addReceiver = addReceiver;
+    public AddCommand(NavigateReceiver navigateReceiver){
+        this.navigateReceiver = navigateReceiver;
     }
 
     @Override
     public void execute(ActionEvent evt) {
-        addReceiver.createAddForm(evt);
+        navigateReceiver.createAddForm(evt);
     }
 
     @Override
