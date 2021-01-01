@@ -8,7 +8,7 @@ public class ProfessionalFriends extends Acquaintances implements Serializable{
     private String CommonInterests;
     public static int numberProF = 0;
     
-    ProfessionalFriends(){
+    public ProfessionalFriends(){
         numberProF++;
     }
     

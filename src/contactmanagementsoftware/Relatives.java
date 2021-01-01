@@ -10,7 +10,7 @@ public class Relatives extends Acquaintances implements Serializable{
     public static int numberRel = 0;
     private static Scanner reader = new Scanner(System.in);
     
-    Relatives(){
+    public Relatives(){
         numberRel++;
     }
     

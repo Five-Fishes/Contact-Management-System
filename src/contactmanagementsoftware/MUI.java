@@ -28,15 +28,6 @@ public class MUI extends JFrame {
      */
     private static MUI mg;
     private ArrayList<ArrayList<Acquaintances>> a;
-
-    public JXTable getjXTable1() {
-        return jXTable1;
-    }
-
-    public ArrayList<ArrayList<Acquaintances>> getA() {
-        return a;
-    }
-
     private ArrayList<ArrayList<Acquaintances>> temp;
     private int x;
     private int num;
@@ -47,19 +38,18 @@ public class MUI extends JFrame {
     private Command addCommand;
     private Command deleteCommand;
     private Command searchCommand;
-    private AddButton addButton;
-    private DeleteButton deleteButton;
-    private SearchButton searchButton;
+    private Command exitCommand;
+    private Command editCommand;
+    private Command vfdCommand;
+    private Command addContactCommand;
+    private Command cancelCommand;
+    private Command backToMainMenuCommand;
+    private Command readFromFileCommand;
+    private Command saveCommand;
     private Invoker invoker;
 
-    public void setMg(MUI mg) {
-        this.mg = mg;
-    }
 
-    public void setA(ArrayList<ArrayList<Acquaintances>> a) {
-        this.a = a;
-    }
-    
+
     public void setDescription(){
         name.setText("");
         mobile.setText("");
@@ -191,16 +181,29 @@ public class MUI extends JFrame {
         setUpTableData();
         invoker = new Invoker();
 
-        addButton = new AddButton();
-        deleteButton = new DeleteButton();
-        searchButton = new SearchButton();
-        addCommand = new AddCommand(addButton);
-        deleteCommand = new DeleteCommand(deleteButton);
-        searchCommand = new SearchCommand(searchButton);
+        addCommand = new AddCommand(new AddButton());
+        deleteCommand = new DeleteCommand(new DeleteButton());
+        searchCommand = new SearchCommand(new SearchButton());
+        exitCommand = new ExitCommand(new ExitButton());
+        editCommand = new EditCommand(new EditButton());
+        vfdCommand = new VFDCommand(new VFDButton());
+        addContactCommand = new AddContactCommand(new AddContactButton());
+        cancelCommand = new CancelCommand(new CancelButton());
+        backToMainMenuCommand = new BackToMainMenuCommand(new BackToMainMenuButton());
+        readFromFileCommand = new ReadFromFileCommand(new ReadFromFileButton());
+        saveCommand = new SaveCommand(new SaveButton());
 
         invoker.setCommand("add",addCommand);
         invoker.setCommand("delete",deleteCommand);
         invoker.setCommand("search", searchCommand);
+        invoker.setCommand("exit", exitCommand);
+        invoker.setCommand("edit", editCommand);
+        invoker.setCommand("vfd", vfdCommand);
+        invoker.setCommand("addContact", addContactCommand);
+        invoker.setCommand("cancel", cancelCommand);
+        invoker.setCommand("backToMainMenu", backToMainMenuCommand);
+        invoker.setCommand("readFromFile", readFromFileCommand);
+        invoker.setCommand("save", saveCommand);
     }
 
     public final void setUpTableData() {
@@ -304,7 +307,7 @@ public class MUI extends JFrame {
         jButton4.setText("Exit");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                invoker.execute("exit", evt);
             }
         });
 
@@ -363,28 +366,29 @@ public class MUI extends JFrame {
         jButton5.setText("Edit");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                invoker.execute("edit", evt);
             }
         });
 
         jButton6.setText("View full detail");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                invoker.execute("vfd", evt);
             }
+
         });
 
         jButton7.setText("Read from file");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                invoker.execute("readFromFile", evt);
             }
         });
 
         jButton8.setText("Save as file");
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
+                invoker.execute("save", evt);
             }
         });
 
@@ -472,7 +476,7 @@ public class MUI extends JFrame {
         jButton9.setText("Back to main menu");
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton9ActionPerformed(evt);
+                invoker.execute("backToMainMenu", evt);
             }
         });
 
@@ -533,7 +537,7 @@ public class MUI extends JFrame {
         jButton10.setText("Add");
         jButton10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton10ActionPerformed(evt);
+                invoker.execute("addContact", evt);
             }
         });
 
@@ -544,7 +548,7 @@ public class MUI extends JFrame {
         jButton11.setText("Cancel");
         jButton11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton11ActionPerformed(evt);
+                invoker.execute("cancel", evt);
             }
         });
 
@@ -618,53 +622,11 @@ public class MUI extends JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        System.exit(0);        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+
 
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
         setUpTableData();
     }//GEN-LAST:event_jList1ValueChanged
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        int index = jList1.getSelectedIndex();
-        if(index<0){
-            JOptionPane.showMessageDialog(mg, "Select a category!");
-            return;
-        }
-        int tindex = jXTable1.getSelectedRow();
-        if(tindex < 0){
-            JOptionPane.showMessageDialog(mg, "Select an entry!");
-            return;
-        }
-        num = tindex;
-        flag = false;
-        dflag = false;
-        x = index;
-        setDescription();
-        jPanel1.setVisible(false);
-        jPanel3.setVisible(true);
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        int index = jList1.getSelectedIndex();
-        if(index<0){
-            JOptionPane.showMessageDialog(mg, "Select a category!");
-            return;
-        }
-        int tindex = jXTable1.getSelectedRow();
-        if(tindex < 0){
-            JOptionPane.showMessageDialog(mg, "Select an entry!");
-            return;
-        }
-        num = tindex;
-        flag = false;
-        x = index;
-        jPanel1.setVisible(false);
-        jPanel3.setVisible(true);
-        dflag = true;
-        setDescription();
-    }//GEN-LAST:event_jButton6ActionPerformed
 
     public void runn(){
         String s = "<html> <b>Search results:</b><br>Found!<br><br>Acquaintance Details: <br>";
@@ -737,76 +699,7 @@ public class MUI extends JFrame {
         }
         details.setText(s);
     }
-    
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
-        int result = fileChooser.showOpenDialog(this);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            try {
-                temp = (ArrayList<ArrayList<Acquaintances>>)SerializationUtil.deserialize(selectedFile);
-            }
-            catch (ClassNotFoundException | IOException e) {
-                JOptionPane.showMessageDialog(mg, "Error");
-                return;
-            }
-        }
-        else{
-            return;
-        }
-        try{
-            for(int i = 0; i < 4; i++){
-                for(int j = 0; j < temp.get(i).size(); j++){
-                    a.get(i).add(temp.get(i).get(j));
-                }
-            }
-        }
-        catch(Exception e){
 
-        }
-        mg.setUpTableData();
-    }//GEN-LAST:event_jButton7ActionPerformed
-
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        String s = (String)JOptionPane.showInputDialog(
-            mg,
-            "Enter file name: (*.ser)",
-            "Input",
-            JOptionPane.PLAIN_MESSAGE,
-            null,
-            null,
-            "output.ser");
-        if(s==null)
-        return;
-        if(!s.endsWith(".ser")){
-            JOptionPane.showMessageDialog(mg, "File name should end with .ser");
-            return;
-        }
-        File[] fileList = (new File(".")).listFiles((File pathname) -> pathname.getName().endsWith(".ser"));
-        boolean flag = false;
-        for(File f : fileList){
-            if(f.getName().matches(s)){
-                flag = true;
-            }
-        }
-        if(flag){
-            int q = JOptionPane.showConfirmDialog(mg, s + " already exists:\nAre you sure you want to overwrite?");
-            if(q!=0)
-            return;
-        }
-        try {
-            SerializationUtil.serialize(a, s);
-        } catch (IOException e) {
-            return;
-        }
-        JOptionPane.showMessageDialog(mg, s + " saved successfully");
-    }//GEN-LAST:event_jButton8ActionPerformed
-
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        jPanel2.setVisible(false);
-        jPanel1.setVisible(true);
-    }//GEN-LAST:event_jButton9ActionPerformed
 
     private void nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameActionPerformed
         // TODO add your handling code here:
@@ -837,145 +730,6 @@ public class MUI extends JFrame {
         else
             return true;
     }
-
-    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        dflag = true;
-        String Name = name.getText();
-        if(Name.isEmpty()){
-            JOptionPane.showMessageDialog(mg, "Enter a name");
-            return;
-        }
-        String Mobile = mobile.getText();
-        if(!MobileNoChecker(Mobile)){
-            JOptionPane.showMessageDialog(mg, "Enter a valid mobile number (6-15 digits)");
-            return;
-        }
-        String Email = email.getText();
-        if(!Email.contains("@")){
-            JOptionPane.showMessageDialog(mg, "Enter a valid email");
-            return;
-        }
-        String One,Two,Three;
-        switch(x){
-            case 0: //perF
-                One = one.getText();
-                if(One.isEmpty() || One.length() > 300){
-                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
-                    return;
-                }
-                Two = two.getText();
-                if(Two.isEmpty() || Two.length() > 300){
-                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
-                    return;
-                }
-                Three = three.getText();
-                if(!validDate(Three)){
-                    return;
-                }
-                if(Three.isEmpty() || Three.length() > 300){
-                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
-                    return;
-                }
-                PersonalFriends perF;
-                if(flag)
-                    perF = new PersonalFriends();
-                else
-                    perF = (PersonalFriends)a.get(x).get(num);
-                perF.setName(Name);
-                perF.setMobileNo(Mobile);
-                perF.setEmail(Email);
-                perF.setEvents(One);
-                perF.setAContext(Two);
-                perF.setADate(Three);
-                if(flag)
-                    a.get(x).add(perF);
-                    //this.a.get(x).add(perF);
-                break;
-            case 1: //rel
-                One = one.getText();
-                if(One.isEmpty() || One.length() > 300){
-                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
-                    return;
-                }
-                if(!validDate(One)){
-                    return;
-                }
-                Two = two.getText();
-                if(Two.isEmpty() || Two.length() > 300){
-                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
-                    return;
-                }
-                if(!validDate(Two)){
-                    return;
-                }
-                Relatives rel;
-                if(flag)
-                    rel = new Relatives();
-                else
-                    rel = (Relatives)a.get(x).get(num);
-                rel.setName(Name);
-                rel.setMobileNo(Mobile);
-                rel.setEmail(Email);
-                rel.setBDate(One);
-                rel.setLDate(Two);
-                if(flag)
-                    a.get(x).add(rel);
-                break;
-            case 2: //proF
-                One = one.getText();
-                if(One.isEmpty() || One.length() > 300){
-                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
-                    return;
-                }
-                ProfessionalFriends proF;
-                if(flag)
-                    proF = new ProfessionalFriends();
-                else
-                    proF = (ProfessionalFriends)a.get(x).get(num);
-                proF.setName(Name);
-                proF.setMobileNo(Mobile);
-                proF.setEmail(Email);
-                proF.setCommonInterests(One);
-                if(flag)
-                    a.get(x).add(proF);
-                break;
-                case 3: //ca
-                One = one.getText();
-                if(One.isEmpty() || One.length() > 300){
-                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
-                    return;
-                }
-                Two = two.getText();
-                if(Two.isEmpty() || Two.length() > 300){
-                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
-                    return;
-                }
-                Three = three.getText();
-                if(Three.isEmpty() || Three.length() > 300){
-                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
-                    return;
-                }
-                CasualAcquaintances ca;
-                if(flag)
-                    ca = new CasualAcquaintances();
-                else
-                    ca = (CasualAcquaintances)a.get(x).get(num);
-                ca.setName(Name);
-                ca.setMobileNo(Mobile);
-                ca.setEmail(Email);
-                ca.setWhenWhere(One);
-                ca.setCircumstances(Two);
-                ca.setOtherInfo(Three);
-                if(flag)
-                    a.get(x).add(ca);
-                break;
-            default:
-                break;
-        }
-        jPanel1.setVisible(true);
-        jPanel3.setVisible(false);
-        mg.setUpTableData();
-    }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         jPanel1.setVisible(true);
@@ -1015,84 +769,6 @@ public class MUI extends JFrame {
                 new MUI().setVisible(true);
             }
         });
-    }
-
-    //Command DP
-
-    public JLabel getJLabel1() {
-        return jLabel1;
-    }
-
-    public JLabel getJLabel2() {
-        return jLabel2;
-    }
-
-    public JLabel getJLabel3() {
-        return jLabel3;
-    }
-
-    public JLabel getJLabel4() {
-        return jLabel4;
-    }
-
-    public JLabel getJLabel5() {
-        return jLabel5;
-    }
-
-    public JLabel getJLabel6() {
-        return jLabel6;
-    }
-
-    public JLabel getJLabel7() {
-        return jLabel7;
-    }
-
-    public JLabel getJLabel8() {
-        return jLabel8;
-    }
-
-    public JLabel getJLabel9() {
-        return jLabel9;
-    }
-
-    public JList getJList1() {
-        return jList1;
-    }
-
-    public JPanel getPanel1() {
-        return jPanel1;
-    }
-
-    public JPanel getPanel2() {
-        return jPanel2;
-    }
-
-    public JPanel getPanel3() {
-        return jPanel3;
-    }
-
-    public boolean getFlag() {
-        return flag;
-    }
-
-    public void setFlag(boolean flag) {
-        this.flag = flag;
-    }
-
-    public void setStr(String str) {
-        this.str = str;
-    }
-
-    public void setDFlag(boolean dflag) {
-        this.dflag = dflag;
-    }
-
-    public void setX (int x) {
-        this.x = x;
-    }
-
-    public JTextPane getDetails() {
-        return details;
     }
 
     public static MUI getInstance() {
@@ -1137,5 +813,107 @@ public class MUI extends JFrame {
     private JTextArea one;
     private JTextArea three;
     private JTextArea two;
+
+
+    //Command DP
+
+    public JXTable getjXTable1() {
+        return jXTable1;
+    }
+
+    public ArrayList<ArrayList<Acquaintances>> getA() {
+        return a;
+    }
+
+    public void setMg(MUI mg) {
+        this.mg = mg;
+    }
+
+    public void setA(ArrayList<ArrayList<Acquaintances>> a) {
+        this.a = a;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public int getX() {
+        return x;
+    }
+    public JTextField getContactEmail() {
+        return email;
+    }
+
+    public void setTemp(ArrayList<ArrayList<Acquaintances>> temp) {
+        this.temp = temp;
+    }
+
+    public ArrayList<ArrayList<Acquaintances>> getTemp() {
+        return temp;
+    }
+
+    public JList getJList1() {
+        return jList1;
+    }
+
+    public JPanel getPanel1() {
+        return jPanel1;
+    }
+
+    public JPanel getPanel2() {
+        return jPanel2;
+    }
+
+    public JPanel getPanel3() {
+        return jPanel3;
+    }
+
+    public boolean getFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
+
+    public void setStr(String str) {
+        this.str = str;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
+
+    public void setDFlag(boolean dflag) {
+        this.dflag = dflag;
+    }
+
+    public void setX (int x) {
+        this.x = x;
+    }
+
+    public JTextPane getDetails() {
+        return details;
+    }
+
+    public JTextField getContactMobile() {
+        return mobile;
+    }
+
+    public JTextField getContactName() {
+        return name;
+    }
+
+    public JTextArea getOne() {
+        return one;
+    }
+
+    public JTextArea getThree() {
+        return three;
+    }
+
+    public JTextArea getTwo() {
+        return two;
+    }
     // End of variables declaration//GEN-END:variables
 }

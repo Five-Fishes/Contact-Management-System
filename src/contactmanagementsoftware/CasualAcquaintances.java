@@ -9,7 +9,7 @@ public class CasualAcquaintances extends Acquaintances implements Serializable{
     private String OtherInfo;
     public static int numberCA = 0;
     
-    CasualAcquaintances(){
+    public CasualAcquaintances(){
         numberCA++;
     }
     
