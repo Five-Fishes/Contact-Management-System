@@ -297,7 +297,7 @@ public class MUI extends JFrame {
         jButton3.setText("Search");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                invoker.execute("search", evt);
             }
         });
 
@@ -617,24 +617,6 @@ public class MUI extends JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        String s = (String)JOptionPane.showInputDialog(
-            mg,
-            "Enter name: ",
-            "Input",
-            JOptionPane.PLAIN_MESSAGE,
-            null,
-            null,
-            "");
-        if(s==null)
-            return;
-        jPanel1.setVisible(false);
-        jPanel2.setVisible(true);
-        str = s;
-        details.setContentType( "text/html" );
-        runn();
-    }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         System.exit(0);        // TODO add your handling code here:
