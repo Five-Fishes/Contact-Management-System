@@ -10,8 +10,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 
-public class DeleteButton {
-    static MUI mui;
+public class DeleteReceiver extends Receiver {
 
     public void deleteEntry(ActionEvent evt){
         mui = MUI.getInstance();

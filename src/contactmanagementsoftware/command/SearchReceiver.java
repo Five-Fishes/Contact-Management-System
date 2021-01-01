@@ -1,16 +1,10 @@
 package contactmanagementsoftware.command;
 
-import contactmanagementsoftware.MUI;
-
 import javax.swing.*;
 
-public class SearchButton {
-    static MUI mui;
+public class SearchReceiver extends Receiver {
 
     public void search() {
-        mui = MUI.getInstance();
-        JPanel jPanel1 = mui.getPanel1();
-        JPanel jPanel2 = mui.getPanel2();
         JTextPane details = mui.getDetails();
 
         String s = (String) JOptionPane.showInputDialog(

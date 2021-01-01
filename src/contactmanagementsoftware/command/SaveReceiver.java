@@ -1,20 +1,14 @@
 package contactmanagementsoftware.command;
 
-import contactmanagementsoftware.Acquaintances;
-import contactmanagementsoftware.MUI;
 import contactmanagementsoftware.SerializationUtil;
 
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
-public class SaveButton {
-    static MUI mui;
+public class SaveReceiver extends Receiver {
 
     public void save(){
-        mui = mui.getInstance();
-        ArrayList<ArrayList<Acquaintances>> a = mui.getA();
         String s = (String) JOptionPane.showInputDialog(
                 mui,
                 "Enter file name: (*.ser)",

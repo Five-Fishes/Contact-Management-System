@@ -1,7 +1,6 @@
 package contactmanagementsoftware.command;
 
 import contactmanagementsoftware.Acquaintances;
-import contactmanagementsoftware.MUI;
 import contactmanagementsoftware.SerializationUtil;
 
 import javax.swing.*;
@@ -9,14 +8,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ReadFromFileButton {
-    static MUI mui;
+public class ReadFromFileReceiver extends Receiver {
+    ArrayList<ArrayList<Acquaintances>> temp;
 
     public void readFromFile(){
-        mui = mui.getInstance();
-        ArrayList<ArrayList<Acquaintances>> temp;
-        ArrayList<ArrayList<Acquaintances>> a = mui.getA();
-
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
         int result = fileChooser.showOpenDialog(mui);

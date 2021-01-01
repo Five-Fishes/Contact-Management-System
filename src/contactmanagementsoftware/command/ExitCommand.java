@@ -4,15 +4,15 @@ import java.awt.event.ActionEvent;
 
 public class ExitCommand implements  Command{
 
-    ExitButton exitButton;
+    ExitReceiver exitReceiver;
 
-    public ExitCommand(ExitButton exitButton) {
-        this.exitButton = exitButton;
+    public ExitCommand(ExitReceiver exitReceiver) {
+        this.exitReceiver = exitReceiver;
     }
 
     @Override
     public void execute(ActionEvent evt) {
-        exitButton.exit();
+        exitReceiver.exit();
     }
 
     @Override

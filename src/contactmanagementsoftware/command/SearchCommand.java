@@ -4,15 +4,15 @@ import java.awt.event.ActionEvent;
 
 public class SearchCommand implements Command{
 
-    SearchButton searchButton;
+    SearchReceiver searchReceiver;
 
-    public SearchCommand(SearchButton searchButton) {
-        this.searchButton = searchButton;
+    public SearchCommand(SearchReceiver searchReceiver) {
+        this.searchReceiver = searchReceiver;
     }
 
     @Override
     public void execute(ActionEvent evt) {
-        searchButton.search();
+        searchReceiver.search();
     }
 
     @Override

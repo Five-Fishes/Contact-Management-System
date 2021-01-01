@@ -4,15 +4,15 @@ import java.awt.event.ActionEvent;
 
 public class BackToMainMenuCommand implements Command{
 
-    BackToMainMenuButton backToMainMenuButton;
+    BackToMainMenuReceiver backToMainMenuReceiver;
 
-    public BackToMainMenuCommand (BackToMainMenuButton backToMainMenuButton){
-        this.backToMainMenuButton = backToMainMenuButton;
+    public BackToMainMenuCommand (BackToMainMenuReceiver backToMainMenuReceiver){
+        this.backToMainMenuReceiver = backToMainMenuReceiver;
     }
 
     @Override
     public void execute(ActionEvent evt) {
-        backToMainMenuButton.backToMainMenu();
+        backToMainMenuReceiver.backToMainMenu();
     }
 
     @Override

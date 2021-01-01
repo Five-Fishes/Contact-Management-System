@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class Invoker {
     Map<String, Command> commands = new HashMap<>();
+    Command undoCommand;
 
     public void setCommand(String action, Command command) {
         commands.put(action, command);
@@ -13,5 +14,10 @@ public class Invoker {
 
     public void execute(String action, ActionEvent evt) {
         commands.get(action).execute(evt);
+        undoCommand = commands.get(action);
+    }
+
+    public void undo(ActionEvent evt){
+        undoCommand.undo(evt);
     }
 }

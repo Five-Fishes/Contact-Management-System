@@ -5,14 +5,9 @@ import contactmanagementsoftware.*;
 import javax.swing.*;
 import java.util.ArrayList;
 
-public class AddContactButton {
-    static MUI mui;
-    
-    public void addContact(){
-        mui = mui.getInstance();
-        JPanel jPanel1 = mui.getPanel1();
-        JPanel jPanel3 = mui.getPanel3();
+public class AddContactReceiver extends Receiver {
 
+    public void addContact(){
         int x = mui.getX();
         boolean flag = mui.getFlag();
         ArrayList<ArrayList<Acquaintances>> a = mui.getA();
@@ -23,7 +18,6 @@ public class AddContactButton {
         JTextArea two = mui.getTwo();
         JTextArea three = mui.getThree();
         int num = mui.getNum();
-
 
         mui.setDFlag(true);
         String Name = name.getText();

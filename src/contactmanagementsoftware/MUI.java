@@ -8,8 +8,6 @@ package contactmanagementsoftware;
 import contactmanagementsoftware.command.*;
 import org.jdesktop.swingx.JXTable;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -180,18 +178,20 @@ public class MUI extends JFrame {
         jXTable1.setModel(model);
         setUpTableData();
         invoker = new Invoker();
+    }
 
-        addCommand = new AddCommand(new AddButton());
-        deleteCommand = new DeleteCommand(new DeleteButton());
-        searchCommand = new SearchCommand(new SearchButton());
-        exitCommand = new ExitCommand(new ExitButton());
-        editCommand = new EditCommand(new EditButton());
-        vfdCommand = new VFDCommand(new VFDButton());
-        addContactCommand = new AddContactCommand(new AddContactButton());
-        cancelCommand = new CancelCommand(new CancelButton());
-        backToMainMenuCommand = new BackToMainMenuCommand(new BackToMainMenuButton());
-        readFromFileCommand = new ReadFromFileCommand(new ReadFromFileButton());
-        saveCommand = new SaveCommand(new SaveButton());
+    public void loadCommands(){
+        addCommand = new AddCommand(new AddReceiver());
+        deleteCommand = new DeleteCommand(new DeleteReceiver());
+        searchCommand = new SearchCommand(new SearchReceiver());
+        exitCommand = new ExitCommand(new ExitReceiver());
+        editCommand = new EditCommand(new EditReceiver());
+        vfdCommand = new VFDCommand(new VFDReceiver());
+        addContactCommand = new AddContactCommand(new AddContactReceiver());
+        cancelCommand = new CancelCommand(new CancelReceiver());
+        backToMainMenuCommand = new BackToMainMenuCommand(new BackToMainMenuReceiver());
+        readFromFileCommand = new ReadFromFileCommand(new ReadFromFileReceiver());
+        saveCommand = new SaveCommand(new SaveReceiver());
 
         invoker.setCommand("add",addCommand);
         invoker.setCommand("delete",deleteCommand);

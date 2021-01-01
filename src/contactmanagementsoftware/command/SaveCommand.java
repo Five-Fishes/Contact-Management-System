@@ -3,15 +3,15 @@ package contactmanagementsoftware.command;
 import java.awt.event.ActionEvent;
 
 public class SaveCommand implements Command {
-    SaveButton saveButton;
+    SaveReceiver saveReceiver;
 
-    public SaveCommand(SaveButton saveButton){
-        this.saveButton = saveButton;
+    public SaveCommand(SaveReceiver saveReceiver){
+        this.saveReceiver = saveReceiver;
     }
 
     @Override
     public void execute(ActionEvent evt) {
-        saveButton.save();
+        saveReceiver.save();
     }
 
     @Override

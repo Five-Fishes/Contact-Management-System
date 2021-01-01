@@ -4,15 +4,15 @@ import java.awt.event.ActionEvent;
 
 public class EditCommand implements Command{
 
-    EditButton editButton;
+    EditReceiver editReceiver;
 
-    public EditCommand(EditButton editButton) {
-        this.editButton = editButton;
+    public EditCommand(EditReceiver editReceiver) {
+        this.editReceiver = editReceiver;
     }
 
     @Override
     public void execute(ActionEvent evt) {
-        editButton.edit();
+        editReceiver.edit();
     }
 
     @Override

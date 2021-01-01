@@ -1,6 +1,6 @@
 package contactmanagementsoftware.command;
 
-public class ExitButton {
+public class ExitReceiver {
 
     public void exit(){
         System.exit(0);
