@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 public class AddButton {
     static MUI mui;
 
-    public void addForm(ActionEvent evt){
+    public void createAddForm(ActionEvent evt){
         mui = MUI.getInstance();
         JList jList1 = mui.getJList1();
         JPanel jPanel1 = mui.getPanel1();

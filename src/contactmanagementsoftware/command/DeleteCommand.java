@@ -2,17 +2,17 @@ package contactmanagementsoftware.command;
 
 import java.awt.event.ActionEvent;
 
-public class AddCommand implements Command{
+public class DeleteCommand implements Command{
 
-    AddButton addbutton;
+    DeleteButton deleteButton;
 
-    public AddCommand(AddButton addButton){
-        this.addbutton = addButton;
+    public DeleteCommand (DeleteButton deleteButton) {
+        this.deleteButton = deleteButton;
     }
 
     @Override
     public void execute(ActionEvent evt) {
-        addbutton.createAddForm(evt);
+        deleteButton.deleteEntry(evt);
     }
 
     @Override

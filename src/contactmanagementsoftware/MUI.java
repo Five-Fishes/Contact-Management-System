@@ -5,10 +5,7 @@
  */
 package contactmanagementsoftware;
 
-import contactmanagementsoftware.command.AddButton;
-import contactmanagementsoftware.command.AddCommand;
-import contactmanagementsoftware.command.Command;
-import contactmanagementsoftware.command.Invoker;
+import contactmanagementsoftware.command.*;
 import org.jdesktop.swingx.JXTable;
 
 import java.io.File;
@@ -31,6 +28,15 @@ public class MUI extends JFrame {
      */
     private static MUI mg;
     private ArrayList<ArrayList<Acquaintances>> a;
+
+    public JXTable getjXTable1() {
+        return jXTable1;
+    }
+
+    public ArrayList<ArrayList<Acquaintances>> getA() {
+        return a;
+    }
+
     private ArrayList<ArrayList<Acquaintances>> temp;
     private int x;
     private int num;
@@ -38,8 +44,10 @@ public class MUI extends JFrame {
     private boolean dflag;
     private String op;
     private String str;
-    private Command command;
+    private Command addCommand;
+    private Command deleteCommand;
     private AddButton addButton;
+    private DeleteButton deleteButton;
     private Invoker invoker;
 
     public void setMg(MUI mg) {
@@ -182,9 +190,12 @@ public class MUI extends JFrame {
         invoker = new Invoker();
 
         addButton = new AddButton();
-        command = new AddCommand(addButton);
+        deleteButton = new DeleteButton();
+        addCommand = new AddCommand(addButton);
+        deleteCommand = new DeleteCommand(deleteButton);
 
-        invoker.setCommand("add",command);
+        invoker.setCommand("add",addCommand);
+        invoker.setCommand("delete",deleteCommand);
     }
 
     public final void setUpTableData() {
@@ -274,7 +285,7 @@ public class MUI extends JFrame {
         jButton2.setText("Delete");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                invoker.execute("delete", evt);
             }
         });
 
@@ -602,29 +613,6 @@ public class MUI extends JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        int index = jList1.getSelectedIndex();
-        if(index<0){
-            JOptionPane.showMessageDialog(mg, "Select a category!");
-            return;
-        }
-        int tindex = jXTable1.getSelectedRow();
-        if(tindex < 0){
-            JOptionPane.showMessageDialog(mg, "Select an entry!");
-            return;
-        }
-        int n = JOptionPane.showConfirmDialog(
-            mg,
-            "Are you sure you want to delete this?",
-            "Confirm",
-            JOptionPane.YES_NO_OPTION);
-        if(n==0){
-            a.get(index).remove(tindex);
-            JOptionPane.showMessageDialog(mg, "Successfully Deleted");
-            mg.setUpTableData();
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         String s = (String)JOptionPane.showInputDialog(
             mg,
@@ -862,7 +850,7 @@ public class MUI extends JFrame {
         else
             return true;
     }
-        
+
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         dflag = true;
         String Name = name.getText();
