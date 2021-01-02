@@ -5,6 +5,11 @@
  */
 package contactmanagementsoftware;
 
+import contactmanagementsoftware.strategy.pattern.CasualAcquaintancesUISetter;
+import contactmanagementsoftware.strategy.pattern.PersonalFriendsUISetter;
+import contactmanagementsoftware.strategy.pattern.ProfessionalFriendsUISetter;
+import contactmanagementsoftware.strategy.pattern.RelativesUISetter;
+import contactmanagementsoftware.strategy.pattern.UISetter;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -25,14 +30,15 @@ public class MUI extends javax.swing.JFrame {
      * Creates new form MUI
      */
     private MUI mg;
-    private ArrayList<ArrayList<Acquaintances>> a;
+    public ArrayList<ArrayList<Acquaintances>> a;
     private ArrayList<ArrayList<Acquaintances>> temp;
-    private int x;
-    private int num;
-    private boolean flag;
-    private boolean dflag;
-    private String op;
+    public int selectedContactType;
+    public int selectedContactIndex;
+    public boolean isAddContact;
+    public boolean isDisplayOnly;
+    public String op;
     private String str;
+    private UISetter contactDetailsPanelSetter;
     
     public void setMg(MUI mg) {
         this.mg = mg;
@@ -42,128 +48,7 @@ public class MUI extends javax.swing.JFrame {
         this.a = a;
     }
     
-    public void setDescription(){
-        name.setText("");
-        mobile.setText("");
-        email.setText("");
-        one.setText("");
-        two.setText("");
-        three.setText("");
-        if(!dflag){
-            name.setEditable(true);
-            mobile.setEditable(true);
-            email.setEditable(true);
-            one.setEditable(true);
-            two.setEditable(true);
-            three.setEditable(true);
-        }
-        if(flag)
-            op = "Add";
-        else
-            op = "Edit";
-        if(!flag){
-            jButton10.setText("Save");
-            Acquaintances e = a.get(x).get(num);            
-            name.setText(e.getName());
-            mobile.setText(e.getMobileNo());
-            email.setText(e.getEmail());
-            switch(x){
-                case 0:
-                    PersonalFriends perF = (PersonalFriends)e;
-                    one.setText(perF.getEvents());
-                    two.setText(perF.getAContext());
-                    three.setText(perF.getADate());
-                    break;
-                case 1:
-                    Relatives rel = (Relatives)e;
-                    one.setText(rel.getBDate());
-                    two.setText(rel.getLDate());
-                    break;
-                case 2:
-                    ProfessionalFriends proF = (ProfessionalFriends)e;
-                    one.setText(proF.getCommonInterests());
-                    break;
-                case 3:
-                    CasualAcquaintances ca = (CasualAcquaintances)e;
-                    one.setText(ca.getWhenWhere());
-                    two.setVisible(true);
-                    three.setVisible(true);
-                    two.setText(ca.getCircumstances());
-                    three.setText(ca.getOtherInfo());
-                    break;
-                default:
-                    break;
-            }
-        }
-        jButton10.setVisible(true);
-        jButton11.setVisible(true);
-        if(flag)
-            jButton10.setText("Add");
-        switch(x){
-            case 0:
-                two.setVisible(true);
-                three.setVisible(true);
-                jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, op + " Personal Friends Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("DialogInput", 1, 16)));
-                jLabel7.setText("Specific Events:");
-                jLabel8.setText("First Acquaintance Context:");
-                jLabel9.setVisible(true);
-                jLabel3.setVisible(true);
-                jLabel8.setVisible(true);
-                jLabel7.setVisible(true);
-                jScrollPane5.setVisible(true);
-                jScrollPane4.setVisible(true);
-                jLabel9.setText("<html>First Acquaintance Date:<br>(dd/mm/yyyy)</html>");
-                break;
-            case 1:
-                jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, op + " Relatives Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("DialogInput", 1, 16))); 
-                jLabel7.setText("<html>Relatives Birthday:<br> (dd/mm/yyyy)</html>");
-                jLabel8.setVisible(true);
-                jLabel7.setVisible(true);
-                two.setVisible(true);
-                jLabel8.setText("<html>Last Date met:<br> (dd/mm/yyyy)</html>");
-                jLabel9.setVisible(false);
-                three.setVisible(false);
-                jScrollPane4.setVisible(true);
-                jScrollPane5.setVisible(false);
-                break;
-            case 2:
-                jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, op + " Professional Friends Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("DialogInput", 1, 16))); 
-                jLabel7.setText("Common Interests: ");
-                jLabel7.setVisible(true);
-                jLabel8.setVisible(false);
-                two.setVisible(false);
-                jScrollPane4.setVisible(false);
-                jLabel9.setVisible(false);
-                three.setVisible(false);
-                jScrollPane5.setVisible(false);
-                break;
-            case 3:
-                jScrollPane5.setVisible(true);
-                jScrollPane4.setVisible(true);
-                two.setVisible(true);
-                three.setVisible(true);
-                jLabel7.setVisible(true);
-                jLabel8.setVisible(true);
-                jLabel9.setVisible(true);
-                jLabel7.setText("First meeting time & location:");
-                jLabel8.setText("First meeting CIrcumstances:");
-                jLabel9.setText("Other useful information:");
-                break;
-            default:
-                break;
-        }
-        if(dflag){
-            name.setEditable(false);
-            mobile.setEditable(false);
-            email.setEditable(false);
-            one.setEditable(false);
-            two.setEditable(false);
-            three.setEditable(false);
-            jButton10.setText("Back to main menu");
-            jButton11.setVisible(false);
-            jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Display Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("DialogInput", 1, 16)));
-        }
-    }
+    
     
     public MUI() {
         initComponents();
@@ -206,7 +91,7 @@ public class MUI extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        addBtn = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -216,8 +101,8 @@ public class MUI extends javax.swing.JFrame {
         jXTable1 = new org.jdesktop.swingx.JXTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        editBtn = new javax.swing.JButton();
+        viewFullDetailBtn = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
@@ -234,13 +119,13 @@ public class MUI extends javax.swing.JFrame {
         name = new javax.swing.JTextField();
         email = new javax.swing.JTextField();
         jScrollPane4 = new javax.swing.JScrollPane();
-        two = new javax.swing.JTextArea();
+        textAreaTwo = new javax.swing.JTextArea();
         jScrollPane5 = new javax.swing.JScrollPane();
-        three = new javax.swing.JTextArea();
+        textAreaThree = new javax.swing.JTextArea();
         jButton10 = new javax.swing.JButton();
         mobile = new javax.swing.JTextField();
         jScrollPane6 = new javax.swing.JScrollPane();
-        one = new javax.swing.JTextArea();
+        textAreaOne = new javax.swing.JTextArea();
         jButton11 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -250,10 +135,10 @@ public class MUI extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("<html><u>Contact Management System</u></html>");
 
-        jButton1.setText("Add");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        addBtn.setText("Add");
+        addBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                addBtnActionPerformed(evt);
             }
         });
 
@@ -330,17 +215,17 @@ public class MUI extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Ubuntu Medium", 0, 17)); // NOI18N
         jLabel3.setText("Details:");
 
-        jButton5.setText("Edit");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        editBtn.setText("Edit");
+        editBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                editBtnActionPerformed(evt);
             }
         });
 
-        jButton6.setText("View full detail");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        viewFullDetailBtn.setText("View full detail");
+        viewFullDetailBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                viewFullDetailBtnActionPerformed(evt);
             }
         });
 
@@ -369,17 +254,17 @@ public class MUI extends javax.swing.JFrame {
                         .addGap(38, 38, 38)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton6)
+                                .addComponent(viewFullDetailBtn)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton7))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(editBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -400,7 +285,7 @@ public class MUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2, jButton3, jButton4, jButton5, jButton6, jButton7, jButton8});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addBtn, editBtn, jButton2, jButton3, jButton4, jButton7, jButton8, viewFullDetailBtn});
 
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -411,17 +296,17 @@ public class MUI extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButton2)
-                        .addComponent(jButton1))
+                        .addComponent(addBtn))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButton3)
-                        .addComponent(jButton5)))
+                        .addComponent(editBtn)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButton4)
                         .addComponent(jButton8))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton6)
+                        .addComponent(viewFullDetailBtn)
                         .addComponent(jButton7)))
                 .addGap(49, 49, 49)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -491,14 +376,14 @@ public class MUI extends javax.swing.JFrame {
             }
         });
 
-        two.setColumns(20);
-        two.setRows(5);
-        two.setAutoscrolls(false);
-        jScrollPane4.setViewportView(two);
+        textAreaTwo.setColumns(20);
+        textAreaTwo.setRows(5);
+        textAreaTwo.setAutoscrolls(false);
+        jScrollPane4.setViewportView(textAreaTwo);
 
-        three.setColumns(20);
-        three.setRows(5);
-        jScrollPane5.setViewportView(three);
+        textAreaThree.setColumns(20);
+        textAreaThree.setRows(5);
+        jScrollPane5.setViewportView(textAreaThree);
 
         jButton10.setText("Add");
         jButton10.addActionListener(new java.awt.event.ActionListener() {
@@ -507,9 +392,9 @@ public class MUI extends javax.swing.JFrame {
             }
         });
 
-        one.setColumns(20);
-        one.setRows(5);
-        jScrollPane6.setViewportView(one);
+        textAreaOne.setColumns(20);
+        textAreaOne.setRows(5);
+        jScrollPane6.setViewportView(textAreaOne);
 
         jButton11.setText("Cancel");
         jButton11.addActionListener(new java.awt.event.ActionListener() {
@@ -576,7 +461,7 @@ public class MUI extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton10)
                     .addComponent(jButton11))
@@ -588,7 +473,7 @@ public class MUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
         int index = jList1.getSelectedIndex();
         if(index<0){
             JOptionPane.showMessageDialog(mg, "Select a category!");
@@ -596,11 +481,11 @@ public class MUI extends javax.swing.JFrame {
         }
         jPanel1.setVisible(false);
         jPanel3.setVisible(true);
-        x = index;
-        flag = true;
-        dflag = false;
-        setDescription();
-    }//GEN-LAST:event_jButton1ActionPerformed
+        selectedContactType = index;
+        isAddContact = true;
+        isDisplayOnly = false;
+        contactDetailsPanelSetter.setUI();
+    }//GEN-LAST:event_addBtnActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int index = jList1.getSelectedIndex();
@@ -649,9 +534,34 @@ public class MUI extends javax.swing.JFrame {
 
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
         setUpTableData();
+        
+        /**
+         * Assign UI setter
+         * - Personal
+         * - Relatives
+         * - Professional
+         * - Casual
+         */ 
+        switch(jList1.getSelectedIndex()){
+            case 0:
+                contactDetailsPanelSetter = new PersonalFriendsUISetter(this);
+                break;
+            case 1:
+                contactDetailsPanelSetter = new RelativesUISetter(this);
+                break;
+            case 2:
+                contactDetailsPanelSetter = new ProfessionalFriendsUISetter(this);
+                break;
+            case 3:
+                contactDetailsPanelSetter = new CasualAcquaintancesUISetter(this);
+                break;
+            default:
+                break;
+            
+        }
     }//GEN-LAST:event_jList1ValueChanged
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
         int index = jList1.getSelectedIndex();
         if(index<0){
             JOptionPane.showMessageDialog(mg, "Select a category!");
@@ -662,16 +572,16 @@ public class MUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(mg, "Select an entry!");
             return;
         }
-        num = tindex;
-        flag = false;
-        dflag = false;
-        x = index;
-        setDescription();
+        selectedContactIndex = tindex;
+        isAddContact = false;
+        isDisplayOnly = false;
+        selectedContactType = index;
+        contactDetailsPanelSetter.setUI();
         jPanel1.setVisible(false);
         jPanel3.setVisible(true);
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_editBtnActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void viewFullDetailBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewFullDetailBtnActionPerformed
         int index = jList1.getSelectedIndex();
         if(index<0){
             JOptionPane.showMessageDialog(mg, "Select a category!");
@@ -682,14 +592,14 @@ public class MUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(mg, "Select an entry!");
             return;
         }
-        num = tindex;
-        flag = false;
-        x = index;
+        selectedContactIndex = tindex;
+        isAddContact = false;
+        selectedContactType = index;
         jPanel1.setVisible(false);
         jPanel3.setVisible(true);
-        dflag = true;
-        setDescription();
-    }//GEN-LAST:event_jButton6ActionPerformed
+        isDisplayOnly = true;
+        contactDetailsPanelSetter.setUI();
+    }//GEN-LAST:event_viewFullDetailBtnActionPerformed
 
     public void runn(){
         String s = "<html> <b>Search results:</b><br>Found!<br><br>Acquaintance Details: <br>";
@@ -864,7 +774,7 @@ public class MUI extends javax.swing.JFrame {
     }
         
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        dflag = true;
+        isDisplayOnly = true;
         String Name = name.getText();
         if(Name.isEmpty()){
             JOptionPane.showMessageDialog(mg, "Enter a name");
@@ -881,19 +791,19 @@ public class MUI extends javax.swing.JFrame {
             return;
         }
         String One,Two,Three;
-        switch(x){
+        switch(selectedContactType){
             case 0: //perF
-                One = one.getText();
+                One = textAreaOne.getText();
                 if(One.isEmpty() || One.length() > 300){
                     JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
                     return;
                 }
-                Two = two.getText();
+                Two = textAreaTwo.getText();
                 if(Two.isEmpty() || Two.length() > 300){
                     JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
                     return;
                 }
-                Three = three.getText();
+                Three = textAreaThree.getText();
                 if(!validDate(Three)){
                     return;
                 }
@@ -902,22 +812,22 @@ public class MUI extends javax.swing.JFrame {
                     return;
                 }
                 PersonalFriends perF;
-                if(flag)
+                if(isAddContact)
                     perF = new PersonalFriends();
                 else
-                    perF = (PersonalFriends)a.get(x).get(num);
+                    perF = (PersonalFriends)a.get(selectedContactType).get(selectedContactIndex);
                 perF.setName(Name);
                 perF.setMobileNo(Mobile);
                 perF.setEmail(Email);
                 perF.setEvents(One);
                 perF.setAContext(Two);
                 perF.setADate(Three);
-                if(flag)
-                    a.get(x).add(perF);
-                    //this.a.get(x).add(perF);
+                if(isAddContact)
+                    a.get(selectedContactType).add(perF);
+                    //this.a.get(selectedContactType).add(perF);
                 break;
             case 1: //rel
-                One = one.getText();
+                One = textAreaOne.getText();
                 if(One.isEmpty() || One.length() > 300){
                     JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
                     return;
@@ -925,7 +835,7 @@ public class MUI extends javax.swing.JFrame {
                 if(!validDate(One)){
                     return;
                 }
-                Two = two.getText();
+                Two = textAreaTwo.getText();
                 if(Two.isEmpty() || Two.length() > 300){
                     JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
                     return;
@@ -934,65 +844,65 @@ public class MUI extends javax.swing.JFrame {
                     return;
                 }
                 Relatives rel;
-                if(flag)
+                if(isAddContact)
                     rel = new Relatives();
                 else
-                    rel = (Relatives)a.get(x).get(num);
+                    rel = (Relatives)a.get(selectedContactType).get(selectedContactIndex);
                 rel.setName(Name);
                 rel.setMobileNo(Mobile);
                 rel.setEmail(Email);
                 rel.setBDate(One);
                 rel.setLDate(Two);
-                if(flag)
-                    a.get(x).add(rel);
+                if(isAddContact)
+                    a.get(selectedContactType).add(rel);
                 break;
             case 2: //proF
-                One = one.getText();
+                One = textAreaOne.getText();
                 if(One.isEmpty() || One.length() > 300){
                     JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
                     return;
                 }
                 ProfessionalFriends proF;
-                if(flag)
+                if(isAddContact)
                     proF = new ProfessionalFriends();
                 else
-                    proF = (ProfessionalFriends)a.get(x).get(num);
+                    proF = (ProfessionalFriends)a.get(selectedContactType).get(selectedContactIndex);
                 proF.setName(Name);
                 proF.setMobileNo(Mobile);
                 proF.setEmail(Email);
                 proF.setCommonInterests(One);
-                if(flag)
-                    a.get(x).add(proF);
+                if(isAddContact)
+                    a.get(selectedContactType).add(proF);
                 break;
                 case 3: //ca
-                One = one.getText();
+                One = textAreaOne.getText();
                 if(One.isEmpty() || One.length() > 300){
                     JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
                     return;
                 }
-                Two = two.getText();
+                Two = textAreaTwo.getText();
                 if(Two.isEmpty() || Two.length() > 300){
                     JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
                     return;
                 }
-                Three = three.getText();
+                Three = textAreaThree.getText();
                 if(Three.isEmpty() || Three.length() > 300){
                     JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
                     return;
                 }
                 CasualAcquaintances ca;
-                if(flag)
+                if(isAddContact)
                     ca = new CasualAcquaintances();
                 else
-                    ca = (CasualAcquaintances)a.get(x).get(num);
+                    ca = (CasualAcquaintances)a.get(selectedContactType).get(selectedContactIndex);
                 ca.setName(Name);
                 ca.setMobileNo(Mobile);
                 ca.setEmail(Email);
                 ca.setWhenWhere(One);
                 ca.setCircumstances(Two);
                 ca.setOtherInfo(Three);
-                if(flag)
-                    a.get(x).add(ca);
+                if(isAddContact)
+                    a.get(selectedContactType).add(ca);
                 break;
             default:
                 break;
@@ -1043,43 +953,43 @@ public class MUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addBtn;
     private javax.swing.JTextPane details;
-    private javax.swing.JTextField email;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
+    private javax.swing.JButton editBtn;
+    public javax.swing.JTextField email;
+    public javax.swing.JButton jButton10;
+    public javax.swing.JButton jButton11;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
+    public javax.swing.JLabel jLabel3;
+    public javax.swing.JLabel jLabel4;
+    public javax.swing.JLabel jLabel5;
+    public javax.swing.JLabel jLabel6;
+    public javax.swing.JLabel jLabel7;
+    public javax.swing.JLabel jLabel8;
+    public javax.swing.JLabel jLabel9;
     private javax.swing.JList jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
+    public javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
+    public javax.swing.JScrollPane jScrollPane4;
+    public javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private org.jdesktop.swingx.JXTable jXTable1;
-    private javax.swing.JTextField mobile;
-    private javax.swing.JTextField name;
-    private javax.swing.JTextArea one;
-    private javax.swing.JTextArea three;
-    private javax.swing.JTextArea two;
+    public javax.swing.JTextField mobile;
+    public javax.swing.JTextField name;
+    public javax.swing.JTextArea textAreaOne;
+    public javax.swing.JTextArea textAreaThree;
+    public javax.swing.JTextArea textAreaTwo;
+    private javax.swing.JButton viewFullDetailBtn;
     // End of variables declaration//GEN-END:variables
 }
