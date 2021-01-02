@@ -5,6 +5,8 @@
  */
 package contactmanagementsoftware;
 
+import contactmanagementsoftware.Interpreter.Expression;
+import contactmanagementsoftware.Interpreter.Parser;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -692,10 +694,12 @@ public class MUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     public void runn(){
+        Expression expression = new Parser().constructParser(str);
         String s = "<html> <b>Search results:</b><br>Found!<br><br>Acquaintance Details: <br>";
         int j = 0;
         for(int i = 0; i < a.get(0).size(); i++){
-            if(a.get(0).get(i).getName().matches(str)){
+            //if(a.get(0).get(i).getName().matches(str)){
+            if(expression.interpret(a.get(0).get(i).getName())){
                 j++;
                 PersonalFriends perF = (PersonalFriends)a.get(0).get(i);
                 if(j==1){
@@ -711,7 +715,8 @@ public class MUI extends javax.swing.JFrame {
         }
         j = 0;
         for(int i = 0; i < a.get(1).size(); i++){
-            if(a.get(1).get(i).getName().matches(str)){
+            //if(a.get(1).get(i).getName().matches(str)){
+            if(expression.interpret(a.get(1).get(i).getName())){
                 j++;
                 Relatives rel = (Relatives)a.get(1).get(i);
                 if(j==1){
@@ -726,7 +731,8 @@ public class MUI extends javax.swing.JFrame {
         }
         j = 0;
         for(int i = 0; i < a.get(2).size(); i++){
-            if(a.get(2).get(i).getName().matches(str)){
+            //if(a.get(2).get(i).getName().matches(str)){
+            if(expression.interpret(a.get(2).get(i).getName())){
                 j++;
                 ProfessionalFriends proF = (ProfessionalFriends)a.get(2).get(i);
                 if(j==1){
@@ -740,7 +746,8 @@ public class MUI extends javax.swing.JFrame {
         }
         j = 0;
         for(int i = 0; i < a.get(3).size(); i++){
-            if(a.get(3).get(i).getName().matches(str)){
+            //if(a.get(3).get(i).getName().matches(str)){
+            if(expression.interpret(a.get(3).get(i).getName())){
                 j++;
                 CasualAcquaintances ca = (CasualAcquaintances)a.get(3).get(i);
                 if(j==1){
