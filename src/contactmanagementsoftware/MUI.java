@@ -189,11 +189,11 @@ public class MUI extends JFrame {
         addContactCommand = new AddContactCommand(contactReceiver);
         deleteCommand = new DeleteCommand(contactReceiver);
         searchCommand = new SearchCommand(contactReceiver);
-        editCommand = new EditCommand(contactReceiver);
         vfdCommand = new VFDCommand(contactReceiver);
         readFromFileCommand = new ReadFromFileCommand(contactReceiver);
         saveCommand = new SaveCommand(contactReceiver);
         addCommand = new AddCommand(navigateReceiver);
+        editCommand = new EditCommand(navigateReceiver);
         backToMainMenuCommand = new BackToMainMenuCommand(navigateReceiver);
         cancelCommand = new CancelCommand(navigateReceiver);
         exitCommand = new ExitCommand(navigateReceiver);
@@ -280,6 +280,8 @@ public class MUI extends JFrame {
         jScrollPane6 = new JScrollPane();
         one = new JTextArea();
         jButton11 = new JButton();
+        jButton12 = new JButton();
+
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.CardLayout());
@@ -313,6 +315,13 @@ public class MUI extends JFrame {
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 invoker.execute("exit", evt);
+            }
+        });
+
+        jButton12.setText("Undo");
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                invoker.undo(evt);
             }
         });
 
@@ -420,11 +429,15 @@ public class MUI extends JFrame {
                             .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jButton5, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton3, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jButton3, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton12, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE))
                             .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jButton8)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton4, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jButton4, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton12, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)))
                         .addGap(27, 27, 27))
                     .addComponent(jLabel2)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -439,7 +452,7 @@ public class MUI extends JFrame {
                 .addContainerGap())
         );
 
-        jPanel1Layout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2, jButton3, jButton4, jButton5, jButton6, jButton7, jButton8});
+        jPanel1Layout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2, jButton3, jButton4, jButton5, jButton6, jButton7, jButton8,jButton12});
 
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -450,10 +463,11 @@ public class MUI extends JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(jButton2)
-                        .addComponent(jButton1))
+                        .addComponent(jButton1)
                     .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(jButton3)
-                        .addComponent(jButton5)))
+                        .addComponent(jButton5)
+                        .addComponent(jButton12))))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -785,6 +799,7 @@ public class MUI extends JFrame {
     private JButton jButton1;
     private JButton jButton10;
     private JButton jButton11;
+    private JButton jButton12;
     private JButton jButton2;
     private JButton jButton3;
     private JButton jButton4;

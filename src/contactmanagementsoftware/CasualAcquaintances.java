@@ -1,5 +1,7 @@
 package contactmanagementsoftware;
 
+import javafx.beans.binding.When;
+
 import java.io.Serializable;
 import java.util.Scanner;
 
@@ -11,6 +13,15 @@ public class CasualAcquaintances extends Acquaintances implements Serializable{
     
     public CasualAcquaintances(){
         numberCA++;
+    }
+
+    public CasualAcquaintances(CasualAcquaintances ca){
+        super.setName(ca.getName());
+        super.setMobileNo(ca.getMobileNo());
+        super.setEmail(ca.getEmail());
+        WhenWhere = ca.getWhenWhere();
+        Circumstances = ca.getCircumstances();
+        OtherInfo = ca.OtherInfo;
     }
     
     @Override

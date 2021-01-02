@@ -4,15 +4,15 @@ import java.awt.event.ActionEvent;
 
 public class EditCommand implements Command{
 
-    ContactReceiver contactReceiver;
+    NavigateReceiver navigateReceiver;
 
-    public EditCommand(ContactReceiver contactReceiver) {
-        this.contactReceiver = contactReceiver;
+    public EditCommand(NavigateReceiver navigateReceiver) {
+        this.navigateReceiver = navigateReceiver;
     }
 
     @Override
     public void execute(ActionEvent evt) {
-        contactReceiver.editContact();
+        navigateReceiver.toEditContactForm();
     }
 
     @Override

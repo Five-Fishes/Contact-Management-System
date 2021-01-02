@@ -14,7 +14,16 @@ public class PersonalFriends extends Acquaintances implements Serializable{
     public PersonalFriends(){
         numberPerF++;
     }
-    
+
+    public PersonalFriends(PersonalFriends perF){
+        super.setName(perF.getName());
+        super.setMobileNo(perF.getMobileNo());
+        super.setEmail(perF.getEmail());
+        AContext = perF.getAContext();
+        ADate = perF.getADate();
+        Events = perF.getEvents();
+    }
+
     @Override
     public String getName() {
         return super.getName();

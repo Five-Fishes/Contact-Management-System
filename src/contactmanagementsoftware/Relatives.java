@@ -13,7 +13,15 @@ public class Relatives extends Acquaintances implements Serializable{
     public Relatives(){
         numberRel++;
     }
-    
+
+    public Relatives(Relatives rel){
+        super.setName(rel.getName());
+        super.setMobileNo(rel.getMobileNo());
+        super.setEmail(rel.getEmail());
+        BDate = rel.getBDate();
+        LDate = rel.getLDate();
+    }
+
     @Override
     public String getName() {
         return super.getName();

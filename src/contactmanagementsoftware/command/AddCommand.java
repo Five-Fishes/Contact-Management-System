@@ -12,7 +12,7 @@ public class AddCommand implements Command{
 
     @Override
     public void execute(ActionEvent evt) {
-        navigateReceiver.createAddForm(evt);
+        navigateReceiver.toAddContactForm(evt);
     }
 
     @Override

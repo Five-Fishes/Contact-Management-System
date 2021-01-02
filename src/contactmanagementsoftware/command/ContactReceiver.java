@@ -14,8 +14,10 @@ public class ContactReceiver {
     JXTable jXTable1;
     JPanel jPanel1, jPanel2, jPanel3;
     ArrayList<ArrayList<Acquaintances>> a, temp;
+    Acquaintances acquaintance;
     boolean flag;
-    int x;
+    int index, tindex;
+    ArrayList<Integer> uploadedFileIndexes;
 
     public ContactReceiver(){
         mui = mui.getInstance();
@@ -24,11 +26,12 @@ public class ContactReceiver {
         jPanel2 = mui.getPanel2();
         jPanel3 = mui.getPanel3();
         jXTable1 = mui.getjXTable1();
+        uploadedFileIndexes = new ArrayList<>();
         a = mui.getA();
     }
 
     public void addContact(){
-        x = mui.getX();
+        index = mui.getX();
         flag = mui.getFlag();
         JTextField name = mui.getContactName();
         JTextField mobile = mui.getContactMobile();
@@ -55,7 +58,7 @@ public class ContactReceiver {
             return;
         }
         String One,Two,Three;
-        switch(x){
+        switch(index){
             case 0: //perF
                 One = one.getText();
                 if(One.isEmpty() || One.length() > 300){
@@ -78,8 +81,10 @@ public class ContactReceiver {
                 PersonalFriends perF;
                 if(flag)
                     perF = new PersonalFriends();
-                else
-                    perF = (PersonalFriends)a.get(x).get(num);
+                else{
+                    perF = (PersonalFriends)a.get(index).get(num);
+                    acquaintance = new PersonalFriends(perF);
+                }
                 perF.setName(Name);
                 perF.setMobileNo(Mobile);
                 perF.setEmail(Email);
@@ -87,7 +92,7 @@ public class ContactReceiver {
                 perF.setAContext(Two);
                 perF.setADate(Three);
                 if(flag)
-                    a.get(x).add(perF);
+                    a.get(index).add(perF);
                 break;
             case 1: //rel
                 One = one.getText();
@@ -109,15 +114,18 @@ public class ContactReceiver {
                 Relatives rel;
                 if(flag)
                     rel = new Relatives();
-                else
-                    rel = (Relatives)a.get(x).get(num);
+                else{
+                    rel = (Relatives)a.get(index).get(num);
+                    acquaintance = new Relatives(rel);
+                }
+
                 rel.setName(Name);
                 rel.setMobileNo(Mobile);
                 rel.setEmail(Email);
                 rel.setBDate(One);
                 rel.setLDate(Two);
                 if(flag)
-                    a.get(x).add(rel);
+                    a.get(index).add(rel);
                 break;
             case 2: //proF
                 One = one.getText();
@@ -128,14 +136,16 @@ public class ContactReceiver {
                 ProfessionalFriends proF;
                 if(flag)
                     proF = new ProfessionalFriends();
-                else
-                    proF = (ProfessionalFriends)a.get(x).get(num);
+                else{
+                    proF = (ProfessionalFriends)a.get(index).get(num);
+                    acquaintance = new ProfessionalFriends(proF);
+                }
                 proF.setName(Name);
                 proF.setMobileNo(Mobile);
                 proF.setEmail(Email);
                 proF.setCommonInterests(One);
                 if(flag)
-                    a.get(x).add(proF);
+                    a.get(index).add(proF);
                 break;
             case 3: //ca
                 One = one.getText();
@@ -156,8 +166,10 @@ public class ContactReceiver {
                 CasualAcquaintances ca;
                 if(flag)
                     ca = new CasualAcquaintances();
-                else
-                    ca = (CasualAcquaintances)a.get(x).get(num);
+                else{
+                    ca = (CasualAcquaintances)a.get(index).get(num);
+                    acquaintance = new CasualAcquaintances(ca);
+                }
                 ca.setName(Name);
                 ca.setMobileNo(Mobile);
                 ca.setEmail(Email);
@@ -165,25 +177,30 @@ public class ContactReceiver {
                 ca.setCircumstances(Two);
                 ca.setOtherInfo(Three);
                 if(flag)
-                    a.get(x).add(ca);
+                    a.get(index).add(ca);
                 break;
             default:
                 break;
-
         }
         jPanel1.setVisible(true);
         jPanel3.setVisible(false);
         mui.setUpTableData();
     }
 
+    public void addContact(int index, int tindex, Acquaintances acquaintance){
+        a.get(index).add(tindex, acquaintance);
+        mui.setUpTableData();
+    }
+
     public void deleteContact(){
-        int index = jList1.getSelectedIndex();
+        index = jList1.getSelectedIndex();
+
         if(index<0){
             JOptionPane.showMessageDialog(mui, "Select a category!");
             return;
         }
 
-        int tindex = jXTable1.getSelectedRow();
+        tindex = jXTable1.getSelectedRow();
         if(tindex < 0){
             JOptionPane.showMessageDialog(mui, "Select an entry!");
             return;
@@ -195,31 +212,15 @@ public class ContactReceiver {
                 "Confirm",
                 JOptionPane.YES_NO_OPTION);
         if(n==0){
-            a.get(index).remove(tindex);
+            acquaintance = a.get(index).remove(tindex);
             JOptionPane.showMessageDialog(mui, "Successfully Deleted");
             mui.setUpTableData();
         }
     }
 
-    public void editContact(){
-        int index = jList1.getSelectedIndex();
-        if(index<0){
-            JOptionPane.showMessageDialog(mui, "Select a category!");
-            return;
-        }
-        int tindex = jXTable1.getSelectedRow();
-        if(tindex < 0){
-            JOptionPane.showMessageDialog(mui, "Select an entry!");
-            return;
-        }
-
-        mui.setNum(tindex);
-        mui.setFlag(false);
-        mui.setDFlag(false);
-        mui.setX(index);
-        mui.setDescription();
-        jPanel1.setVisible(false);
-        jPanel3.setVisible(true);
+    public void deleteContact(int index){
+        a.get(index).remove(a.get(index).size() - 1);
+        mui.setUpTableData();
     }
 
     public void viewFullDetail(){
@@ -287,6 +288,7 @@ public class ContactReceiver {
             for(int i = 0; i < 4; i++){
                 for(int j = 0; j < temp.get(i).size(); j++){
                     a.get(i).add(temp.get(i).get(j));
+                    uploadedFileIndexes.add(i);
                 }
             }
         }
@@ -329,6 +331,31 @@ public class ContactReceiver {
             return;
         }
         JOptionPane.showMessageDialog(mui, s + " saved successfully");
+    }
+
+    public Acquaintances getAcquaintance(){
+        return acquaintance;
+    }
+
+    public int getIndex(){
+        return index;
+    }
+
+    public int getTindex(){
+        return tindex;
+    }
+
+    public ArrayList<Integer> getUploadedFileIndexes(){
+        ArrayList<Integer> temp = new ArrayList<>(uploadedFileIndexes);
+        return temp;
+    }
+
+    public void cleanUploadedFileIndexes(){
+        uploadedFileIndexes.clear();
+    }
+
+    public boolean getFlag() {
+        return flag;
     }
 
 }
