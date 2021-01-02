@@ -10,7 +10,7 @@ public class TerminalExpression implements Expression {
 
     @Override
     public boolean interpret(String context) {
-        return context.contains(data);
+        return context.toLowerCase().contains(data.toLowerCase());
     }
 
 }

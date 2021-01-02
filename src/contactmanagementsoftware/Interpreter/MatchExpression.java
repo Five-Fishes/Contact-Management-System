@@ -10,7 +10,7 @@ public class MatchExpression implements Expression {
 
     @Override
     public boolean interpret(String context) {
-        return context.matches(data);
+        return context.toLowerCase().matches(data.toLowerCase());
     }
 
 }
