@@ -36,7 +36,6 @@ public class TestInterpreter {
         Expression orExpression = matchParser.constructParser("Ah Beng | Ali");
         Expression secondOrExpression = matchParser.constructParser("Ali | Ah Beng");
         Expression thirdOrExpression = matchParser.constructParser("Ali | Ah Beng | Ahmad");
-        Expression fourthOrExpression = matchParser.constructParser("A*i");
         for (int i = 0; i < list.size(); i++) {
             System.out.println("Name: " + list.get(i).getName());
             System.out.println("is \"Ah Beng\"? " + matchExpression.interpret(list.get(i).getName()));
