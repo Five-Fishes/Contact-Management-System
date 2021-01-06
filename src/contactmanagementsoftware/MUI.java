@@ -8,6 +8,13 @@ package contactmanagementsoftware;
 import contactmanagementsoftware.command.*;
 import org.jdesktop.swingx.JXTable;
 
+import contactmanagementsoftware.strategy.pattern.CasualAcquaintancesUISetter;
+import contactmanagementsoftware.strategy.pattern.PersonalFriendsUISetter;
+import contactmanagementsoftware.strategy.pattern.ProfessionalFriendsUISetter;
+import contactmanagementsoftware.strategy.pattern.RelativesUISetter;
+import contactmanagementsoftware.strategy.pattern.UISetter;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -27,11 +34,11 @@ public class MUI extends JFrame {
     private static MUI mg;
     private ArrayList<ArrayList<Acquaintances>> a;
     private ArrayList<ArrayList<Acquaintances>> temp;
-    private int x;
-    private int num;
-    private boolean flag;
-    private boolean dflag;
-    private String op;
+    public int selectedContactType;
+    public int selectedContactIndex;
+    public boolean isAddContact;
+    public boolean isDisplayOnly;
+    public String op;
     private String str;
     private Command addCommand;
     private Command deleteCommand;
@@ -47,6 +54,11 @@ public class MUI extends JFrame {
     private ContactReceiver contactReceiver;
     private NavigateReceiver navigateReceiver;
     private Invoker invoker;
+    private UISetter contactDetailsPanelSetter;
+    
+    public void setMg(MUI mg) {
+        this.mg = mg;
+    }
 
 
 
@@ -172,6 +184,11 @@ public class MUI extends JFrame {
             jPanel3.setBorder(BorderFactory.createTitledBorder(null, "Display Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("DialogInput", 1, 16)));
         }
     }
+    public void setA(ArrayList<ArrayList<Acquaintances>> a) {
+        this.a = a;
+    }
+    
+    
     
     public MUI() {
         initComponents();
@@ -290,8 +307,8 @@ public class MUI extends JFrame {
         jLabel2.setHorizontalAlignment(SwingConstants.CENTER);
         jLabel2.setText("<html><u>Contact Management System</u></html>");
 
-        jButton1.setText("Add");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        addBtn.setText("Add");
+        addBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 invoker.execute("add" ,evt);
             }
@@ -377,15 +394,15 @@ public class MUI extends JFrame {
         jLabel3.setFont(new java.awt.Font("Ubuntu Medium", 0, 17)); // NOI18N
         jLabel3.setText("Details:");
 
-        jButton5.setText("Edit");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        editBtn.setText("Edit");
+        editBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 invoker.execute("edit", evt);
             }
         });
 
-        jButton6.setText("View full detail");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        viewFullDetailBtn.setText("View full detail");
+        viewFullDetailBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 invoker.execute("vfd", evt);
             }
@@ -544,14 +561,14 @@ public class MUI extends JFrame {
             }
         });
 
-        two.setColumns(20);
-        two.setRows(5);
-        two.setAutoscrolls(false);
-        jScrollPane4.setViewportView(two);
+        textAreaTwo.setColumns(20);
+        textAreaTwo.setRows(5);
+        textAreaTwo.setAutoscrolls(false);
+        jScrollPane4.setViewportView(textAreaTwo);
 
-        three.setColumns(20);
-        three.setRows(5);
-        jScrollPane5.setViewportView(three);
+        textAreaThree.setColumns(20);
+        textAreaThree.setRows(5);
+        jScrollPane5.setViewportView(textAreaThree);
 
         jButton10.setText("Add");
         jButton10.addActionListener(new java.awt.event.ActionListener() {
@@ -560,9 +577,9 @@ public class MUI extends JFrame {
             }
         });
 
-        one.setColumns(20);
-        one.setRows(5);
-        jScrollPane6.setViewportView(one);
+        textAreaOne.setColumns(20);
+        textAreaOne.setRows(5);
+        jScrollPane6.setViewportView(textAreaOne);
 
         jButton11.setText("Cancel");
         jButton11.addActionListener(new java.awt.event.ActionListener() {
@@ -641,11 +658,89 @@ public class MUI extends JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
+        int index = jList1.getSelectedIndex();
+        if(index<0){
+            JOptionPane.showMessageDialog(mg, "Select a category!");
+            return;
+        }
+        jPanel1.setVisible(false);
+        jPanel3.setVisible(true);
+        selectedContactType = index;
+        isAddContact = true;
+        isDisplayOnly = false;
+        contactDetailsPanelSetter.setUI();
+    }//GEN-LAST:event_addBtnActionPerformed
 
 
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
         setUpTableData();
+        
+        /**
+         * Assign UI setter
+         * - Personal
+         * - Relatives
+         * - Professional
+         * - Casual
+         */ 
+        switch(jList1.getSelectedIndex()){
+            case 0:
+                contactDetailsPanelSetter = new PersonalFriendsUISetter(this);
+                break;
+            case 1:
+                contactDetailsPanelSetter = new RelativesUISetter(this);
+                break;
+            case 2:
+                contactDetailsPanelSetter = new ProfessionalFriendsUISetter(this);
+                break;
+            case 3:
+                contactDetailsPanelSetter = new CasualAcquaintancesUISetter(this);
+                break;
+            default:
+                break;
+            
+        }
     }//GEN-LAST:event_jList1ValueChanged
+
+    private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
+        int index = jList1.getSelectedIndex();
+        if(index<0){
+            JOptionPane.showMessageDialog(mg, "Select a category!");
+            return;
+        }
+        int tindex = jXTable1.getSelectedRow();
+        if(tindex < 0){
+            JOptionPane.showMessageDialog(mg, "Select an entry!");
+            return;
+        }
+        selectedContactIndex = tindex;
+        isAddContact = false;
+        isDisplayOnly = false;
+        selectedContactType = index;
+        contactDetailsPanelSetter.setUI();
+        jPanel1.setVisible(false);
+        jPanel3.setVisible(true);
+    }//GEN-LAST:event_editBtnActionPerformed
+
+    private void viewFullDetailBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewFullDetailBtnActionPerformed
+        int index = jList1.getSelectedIndex();
+        if(index<0){
+            JOptionPane.showMessageDialog(mg, "Select a category!");
+            return;
+        }
+        int tindex = jXTable1.getSelectedRow();
+        if(tindex < 0){
+            JOptionPane.showMessageDialog(mg, "Select an entry!");
+            return;
+        }
+        selectedContactIndex = tindex;
+        isAddContact = false;
+        selectedContactType = index;
+        jPanel1.setVisible(false);
+        jPanel3.setVisible(true);
+        isDisplayOnly = true;
+        contactDetailsPanelSetter.setUI();
+    }//GEN-LAST:event_viewFullDetailBtnActionPerformed
 
     public void runn(){
         String s = "<html> <b>Search results:</b><br>Found!<br><br>Acquaintance Details: <br>";
@@ -749,6 +844,145 @@ public class MUI extends JFrame {
         else
             return true;
     }
+        
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        isDisplayOnly = true;
+        String Name = name.getText();
+        if(Name.isEmpty()){
+            JOptionPane.showMessageDialog(mg, "Enter a name");
+            return;
+        }
+        String Mobile = mobile.getText();
+        if(!MobileNoChecker(Mobile)){
+            JOptionPane.showMessageDialog(mg, "Enter a valid mobile number (6-15 digits)");
+            return;
+        }
+        String Email = email.getText();
+        if(!Email.contains("@")){
+            JOptionPane.showMessageDialog(mg, "Enter a valid email");
+            return;
+        }
+        String One,Two,Three;
+        switch(selectedContactType){
+            case 0: //perF
+                One = textAreaOne.getText();
+                if(One.isEmpty() || One.length() > 300){
+                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
+                    return;
+                }
+                Two = textAreaTwo.getText();
+                if(Two.isEmpty() || Two.length() > 300){
+                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
+                    return;
+                }
+                Three = textAreaThree.getText();
+                if(!validDate(Three)){
+                    return;
+                }
+                if(Three.isEmpty() || Three.length() > 300){
+                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
+                    return;
+                }
+                PersonalFriends perF;
+                if(isAddContact)
+                    perF = new PersonalFriends();
+                else
+                    perF = (PersonalFriends)a.get(selectedContactType).get(selectedContactIndex);
+                perF.setName(Name);
+                perF.setMobileNo(Mobile);
+                perF.setEmail(Email);
+                perF.setEvents(One);
+                perF.setAContext(Two);
+                perF.setADate(Three);
+                if(isAddContact)
+                    a.get(selectedContactType).add(perF);
+                    //this.a.get(selectedContactType).add(perF);
+                break;
+            case 1: //rel
+                One = textAreaOne.getText();
+                if(One.isEmpty() || One.length() > 300){
+                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
+                    return;
+                }
+                if(!validDate(One)){
+                    return;
+                }
+                Two = textAreaTwo.getText();
+                if(Two.isEmpty() || Two.length() > 300){
+                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
+                    return;
+                }
+                if(!validDate(Two)){
+                    return;
+                }
+                Relatives rel;
+                if(isAddContact)
+                    rel = new Relatives();
+                else
+                    rel = (Relatives)a.get(selectedContactType).get(selectedContactIndex);
+                rel.setName(Name);
+                rel.setMobileNo(Mobile);
+                rel.setEmail(Email);
+                rel.setBDate(One);
+                rel.setLDate(Two);
+                if(isAddContact)
+                    a.get(selectedContactType).add(rel);
+                break;
+            case 2: //proF
+                One = textAreaOne.getText();
+                if(One.isEmpty() || One.length() > 300){
+                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
+                    return;
+                }
+                ProfessionalFriends proF;
+                if(isAddContact)
+                    proF = new ProfessionalFriends();
+                else
+                    proF = (ProfessionalFriends)a.get(selectedContactType).get(selectedContactIndex);
+                proF.setName(Name);
+                proF.setMobileNo(Mobile);
+                proF.setEmail(Email);
+                proF.setCommonInterests(One);
+                if(isAddContact)
+                    a.get(selectedContactType).add(proF);
+                break;
+                case 3: //ca
+                One = textAreaOne.getText();
+                if(One.isEmpty() || One.length() > 300){
+                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
+                    return;
+                }
+                Two = textAreaTwo.getText();
+                if(Two.isEmpty() || Two.length() > 300){
+                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
+                    return;
+                }
+                Three = textAreaThree.getText();
+                if(Three.isEmpty() || Three.length() > 300){
+                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
+                    return;
+                }
+                CasualAcquaintances ca;
+                if(isAddContact)
+                    ca = new CasualAcquaintances();
+                else
+                    ca = (CasualAcquaintances)a.get(selectedContactType).get(selectedContactIndex);
+                ca.setName(Name);
+                ca.setMobileNo(Mobile);
+                ca.setEmail(Email);
+                ca.setWhenWhere(One);
+                ca.setCircumstances(Two);
+                ca.setOtherInfo(Three);
+                if(isAddContact)
+                    a.get(selectedContactType).add(ca);
+                break;
+            default:
+                break;
+        }
+        jPanel1.setVisible(true);
+        jPanel3.setVisible(false);
+        mg.setUpTableData();
+    }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         jPanel1.setVisible(true);
