@@ -1,7 +1,8 @@
 package contactmanagementsoftware.command;
 
 import contactmanagementsoftware.*;
-import org.jdesktop.swingx.JXTable;
+import contactmanagementsoftware.singleton.Logger;
+import contactmanagementsoftware.singleton.LoggerSingleton;
 
 import javax.swing.*;
 import java.io.File;
@@ -10,174 +11,168 @@ import java.util.ArrayList;
 
 public class ContactReceiver {
     static MUI mui;
-    JList jList1;
-    JXTable jXTable1;
     JPanel jPanel1, jPanel2, jPanel3;
+    int selectedContactTypeIndex = -1, selectedContactIndex = -1;
     ArrayList<ArrayList<Acquaintances>> a, temp;
     Acquaintances acquaintance;
-    boolean flag;
-    int index, tindex;
     ArrayList<Integer> uploadedFileIndexes;
+    private Logger logger = LoggerSingleton.getInstance();
 
     public ContactReceiver(){
         mui = mui.getInstance();
-        jList1 = mui.getJList1();
-        jPanel1 = mui.getPanel1();
-        jPanel2 = mui.getPanel2();
-        jPanel3 = mui.getPanel3();
-        jXTable1 = mui.getjXTable1();
+        jPanel1 = mui.getjPanel1();
+        jPanel2 = mui.getjPanel2();
+        jPanel3 = mui.getjPanel3();
         uploadedFileIndexes = new ArrayList<>();
-        a = mui.getA();
+        a = mui.getAllAcquantanceList();
     }
 
-    public void addContact(){
-        index = mui.getX();
-        flag = mui.getFlag();
-        JTextField name = mui.getContactName();
-        JTextField mobile = mui.getContactMobile();
-        JTextField email = mui.getContactEmail();
-        JTextArea one = mui.getOne();
-        JTextArea two = mui.getTwo();
-        JTextArea three = mui.getThree();
-        int num = mui.getNum();
+    public boolean addContact(){
+        selectedContactTypeIndex = mui.getSelectedContactTypeIndex();
+        JTextField nameTextField = mui.getNameTextField();
+        JTextField mobileTextField = mui.getMobileTextField();
+        JTextField emailTextField = mui.getEmailTextField();
+        JTextArea one = mui.getTextAreaOne();
+        JTextArea two = mui.getTextAreaTwo();
+        JTextArea three = mui.getTextAreaThree();
 
-        mui.setDFlag(true);
-        String Name = name.getText();
-        if(Name.isEmpty()){
+        mui.setIsDisplayOnly(true);
+        String name = nameTextField.getText();
+        if(name.isEmpty()){
             JOptionPane.showMessageDialog(mui, "Enter a name");
-            return;
+            return false;
         }
-        String Mobile = mobile.getText();
-        if(!mui.MobileNoChecker(Mobile)){
+        String mobile = mobileTextField.getText();
+        if(!mui.MobileNoChecker(mobile)){
             JOptionPane.showMessageDialog(mui, "Enter a valid mobile number (6-15 digits)");
-            return;
+            return false;
         }
-        String Email = email.getText();
-        if(!Email.contains("@")){
+        String email = emailTextField.getText();
+        if(!email.contains("@")){
             JOptionPane.showMessageDialog(mui, "Enter a valid email");
-            return;
+            return false;
         }
         String One,Two,Three;
-        switch(index){
+        switch(selectedContactTypeIndex){
             case 0: //perF
                 One = one.getText();
                 if(One.isEmpty() || One.length() > 300){
                     JOptionPane.showMessageDialog(mui, "Enter a valid value ( 1 to 300 chars)");
-                    return;
+                    return false;
                 }
                 Two = two.getText();
                 if(Two.isEmpty() || Two.length() > 300){
                     JOptionPane.showMessageDialog(mui, "Enter a valid value ( 1 to 300 chars)");
-                    return;
+                    return false;
                 }
                 Three = three.getText();
                 if(!mui.validDate(Three)){
-                    return;
+                    return false;
                 }
                 if(Three.isEmpty() || Three.length() > 300){
                     JOptionPane.showMessageDialog(mui, "Enter a valid value ( 1 to 300 chars)");
-                    return;
+                    return false;
                 }
                 PersonalFriends perF;
-                if(flag)
+                if(mui.getIsAddContact())
                     perF = new PersonalFriends();
                 else{
-                    perF = (PersonalFriends)a.get(index).get(num);
+                    perF = (PersonalFriends)mui.getCurrentAcquaintance();
                     acquaintance = new PersonalFriends(perF);
                 }
-                perF.setName(Name);
-                perF.setMobileNo(Mobile);
-                perF.setEmail(Email);
+                perF.setName(name);
+                perF.setMobileNo(mobile);
+                perF.setEmail(email);
                 perF.setEvents(One);
                 perF.setAContext(Two);
                 perF.setADate(Three);
-                if(flag)
-                    a.get(index).add(perF);
+                if(mui.getIsAddContact())
+                    a.get(selectedContactTypeIndex).add(perF);
                 break;
             case 1: //rel
                 One = one.getText();
                 if(One.isEmpty() || One.length() > 300){
                     JOptionPane.showMessageDialog(mui, "Enter a valid value ( 1 to 300 chars)");
-                    return;
+                    return false;
                 }
                 if(!mui.validDate(One)){
-                    return;
+                    return false;
                 }
                 Two = two.getText();
                 if(Two.isEmpty() || Two.length() > 300){
                     JOptionPane.showMessageDialog(mui, "Enter a valid value ( 1 to 300 chars)");
-                    return;
+                    return false;
                 }
                 if(!mui.validDate(Two)){
-                    return;
+                    return false;
                 }
                 Relatives rel;
-                if(flag)
+                if(mui.getIsAddContact())
                     rel = new Relatives();
                 else{
-                    rel = (Relatives)a.get(index).get(num);
+                    rel = (Relatives)mui.getCurrentAcquaintance();
                     acquaintance = new Relatives(rel);
                 }
 
-                rel.setName(Name);
-                rel.setMobileNo(Mobile);
-                rel.setEmail(Email);
+                rel.setName(name);
+                rel.setMobileNo(mobile);
+                rel.setEmail(email);
                 rel.setBDate(One);
                 rel.setLDate(Two);
-                if(flag)
-                    a.get(index).add(rel);
+                if(mui.getIsAddContact())
+                    a.get(selectedContactTypeIndex).add(rel);
                 break;
             case 2: //proF
                 One = one.getText();
                 if(One.isEmpty() || One.length() > 300){
                     JOptionPane.showMessageDialog(mui, "Enter a valid value ( 1 to 300 chars)");
-                    return;
+                    return false;
                 }
                 ProfessionalFriends proF;
-                if(flag)
+                if(mui.getIsAddContact())
                     proF = new ProfessionalFriends();
                 else{
-                    proF = (ProfessionalFriends)a.get(index).get(num);
+                    proF = (ProfessionalFriends)mui.getCurrentAcquaintance();
                     acquaintance = new ProfessionalFriends(proF);
                 }
-                proF.setName(Name);
-                proF.setMobileNo(Mobile);
-                proF.setEmail(Email);
+                proF.setName(name);
+                proF.setMobileNo(mobile);
+                proF.setEmail(email);
                 proF.setCommonInterests(One);
-                if(flag)
-                    a.get(index).add(proF);
+                if(mui.getIsAddContact())
+                    a.get(selectedContactTypeIndex).add(proF);
                 break;
             case 3: //ca
                 One = one.getText();
                 if(One.isEmpty() || One.length() > 300){
                     JOptionPane.showMessageDialog(mui, "Enter a valid value ( 1 to 300 chars)");
-                    return;
+                    return false;
                 }
                 Two = two.getText();
                 if(Two.isEmpty() || Two.length() > 300){
                     JOptionPane.showMessageDialog(mui, "Enter a valid value ( 1 to 300 chars)");
-                    return;
+                    return false;
                 }
                 Three = three.getText();
                 if(Three.isEmpty() || Three.length() > 300){
                     JOptionPane.showMessageDialog(mui, "Enter a valid value ( 1 to 300 chars)");
-                    return;
+                    return false;
                 }
                 CasualAcquaintances ca;
-                if(flag)
+                if(mui.getIsAddContact())
                     ca = new CasualAcquaintances();
                 else{
-                    ca = (CasualAcquaintances)a.get(index).get(num);
+                    ca = (CasualAcquaintances)mui.getCurrentAcquaintance();
                     acquaintance = new CasualAcquaintances(ca);
                 }
-                ca.setName(Name);
-                ca.setMobileNo(Mobile);
-                ca.setEmail(Email);
+                ca.setName(name);
+                ca.setMobileNo(mobile);
+                ca.setEmail(email);
                 ca.setWhenWhere(One);
                 ca.setCircumstances(Two);
                 ca.setOtherInfo(Three);
-                if(flag)
-                    a.get(index).add(ca);
+                if(mui.getIsAddContact())
+                    a.get(selectedContactTypeIndex).add(ca);
                 break;
             default:
                 break;
@@ -185,25 +180,24 @@ public class ContactReceiver {
         jPanel1.setVisible(true);
         jPanel3.setVisible(false);
         mui.setUpTableData();
+        return true;
     }
 
-    public void addContact(int index, int tindex, Acquaintances acquaintance){
-        a.get(index).add(tindex, acquaintance);
+    public void addContact(int selectedContactTypeIndex, int selectedContactIndex, Acquaintances acquaintance){
+        a.get(selectedContactTypeIndex).add(selectedContactIndex, acquaintance);
         mui.setUpTableData();
     }
 
-    public void deleteContact(){
-        index = jList1.getSelectedIndex();
-
-        if(index<0){
+    public boolean deleteContact(){
+        selectedContactTypeIndex = mui.getSelectedContactTypeIndex();
+        if(selectedContactTypeIndex < 0){
             JOptionPane.showMessageDialog(mui, "Select a category!");
-            return;
+            return false;
         }
-
-        tindex = jXTable1.getSelectedRow();
-        if(tindex < 0){
+        selectedContactIndex = mui.getSelectedContactIndex();
+        if(selectedContactIndex < 0){
             JOptionPane.showMessageDialog(mui, "Select an entry!");
-            return;
+            return false;
         }
 
         int n = JOptionPane.showConfirmDialog(
@@ -212,37 +206,38 @@ public class ContactReceiver {
                 "Confirm",
                 JOptionPane.YES_NO_OPTION);
         if(n==0){
-            acquaintance = a.get(index).remove(tindex);
+            acquaintance = a.get(mui.getSelectedContactTypeIndex()).remove(mui.getSelectedContactIndex());
             JOptionPane.showMessageDialog(mui, "Successfully Deleted");
             mui.setUpTableData();
+            return true;
+        }
+        else{
+            return false;
         }
     }
 
-    public void deleteContact(int index){
-        a.get(index).remove(a.get(index).size() - 1);
+    public void deleteContact(int selectedContactTypeIndex){
+        a.get(selectedContactTypeIndex).remove(a.get(selectedContactTypeIndex).size() - 1);
         mui.setUpTableData();
     }
 
     public void viewFullDetail(){
 
-        int index = jList1.getSelectedIndex();
-        if(index<0){
+        if(mui.getSelectedContactTypeIndex() < 0){
             JOptionPane.showMessageDialog(mui, "Select a category!");
             return;
         }
-        int tindex = jXTable1.getSelectedRow();
-        if(tindex < 0){
+        
+        if(mui.getSelectedContactIndex() < 0){
             JOptionPane.showMessageDialog(mui, "Select an entry!");
             return;
         }
 
-        mui.setNum(tindex);
-        mui.setFlag(false);
-        mui.setX(index);
+        mui.setIsAddContact(false);
         jPanel1.setVisible(false);
         jPanel3.setVisible(true);
-        mui.setDFlag(true);
-        mui.setDescription();
+        mui.setIsDisplayOnly(true);
+        mui.contactDetailsPanelSetterSetUI();
 
     }
 
@@ -263,26 +258,27 @@ public class ContactReceiver {
         jPanel2.setVisible(true);
         mui.setStr(s);
         details.setContentType( "text/html" );
-        mui.runn();
+        mui.searchNameAndDisplay();
     }
 
-    public void uploadContacts(){
+    public boolean uploadContacts(){
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
         int result = fileChooser.showOpenDialog(mui);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             try {
-                mui.setTemp((ArrayList<ArrayList<Acquaintances>>) SerializationUtil.deserialize(selectedFile));
-                temp = mui.getTemp();
+                temp = (ArrayList<ArrayList<Acquaintances>>) SerializationUtil.deserialize(selectedFile);
             }
             catch (ClassNotFoundException | IOException e) {
                 JOptionPane.showMessageDialog(mui, "Error");
-                return;
+                logger.error(e.getMessage());
+                e.printStackTrace();
+                return false;
             }
         }
         else{
-            return;
+            return false;
         }
         try{
             for(int i = 0; i < 4; i++){
@@ -293,9 +289,12 @@ public class ContactReceiver {
             }
         }
         catch(Exception e){
-
+            logger.error(e.getMessage());
+            e.printStackTrace();
+            return false;
         }
         mui.setUpTableData();
+        return true;
     }
 
     public void saveContacts(){
@@ -337,25 +336,24 @@ public class ContactReceiver {
         return acquaintance;
     }
 
-    public int getIndex(){
-        return index;
+    public int getSelectedContactTypeIndex(){
+        return selectedContactTypeIndex;
     }
 
-    public int getTindex(){
-        return tindex;
+    public int getSelectedContactIndex(){
+        return selectedContactIndex;
     }
 
     public ArrayList<Integer> getUploadedFileIndexes(){
-        ArrayList<Integer> temp = new ArrayList<>(uploadedFileIndexes);
-        return temp;
+        return uploadedFileIndexes;
     }
 
     public void cleanUploadedFileIndexes(){
         uploadedFileIndexes.clear();
     }
 
-    public boolean getFlag() {
-        return flag;
+    public boolean getIsAddContact() {
+        return mui.getIsAddContact();
     }
 
 }

@@ -6,15 +6,12 @@
 package contactmanagementsoftware;
 
 import contactmanagementsoftware.command.*;
-import org.jdesktop.swingx.JXTable;
 
 import contactmanagementsoftware.strategy.pattern.CasualAcquaintancesUISetter;
 import contactmanagementsoftware.strategy.pattern.PersonalFriendsUISetter;
 import contactmanagementsoftware.strategy.pattern.ProfessionalFriendsUISetter;
 import contactmanagementsoftware.strategy.pattern.RelativesUISetter;
 import contactmanagementsoftware.strategy.pattern.UISetter;
-import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -32,12 +29,9 @@ public class MUI extends JFrame {
      * Creates new form MUI
      */
     private static MUI mg;
-    private ArrayList<ArrayList<Acquaintances>> a;
-    private ArrayList<ArrayList<Acquaintances>> temp;
-    public int selectedContactType;
-    public int selectedContactIndex;
-    public boolean isAddContact;
-    public boolean isDisplayOnly;
+    public ArrayList<ArrayList<Acquaintances>> a;
+    private boolean isAddContact;
+    private boolean isDisplayOnly;
     public String op;
     private String str;
     private Command addCommand;
@@ -59,136 +53,69 @@ public class MUI extends JFrame {
     public void setMg(MUI mg) {
         this.mg = mg;
     }
-
-
-
-    public void setDescription(){
-        name.setText("");
-        mobile.setText("");
-        email.setText("");
-        one.setText("");
-        two.setText("");
-        three.setText("");
-        if(!dflag){
-            name.setEditable(true);
-            mobile.setEditable(true);
-            email.setEditable(true);
-            one.setEditable(true);
-            two.setEditable(true);
-            three.setEditable(true);
-        }
-        if(flag)
-            op = "Add";
-        else
-            op = "Edit";
-        if(!flag){
-            jButton10.setText("Save");
-            Acquaintances e = a.get(x).get(num);            
-            name.setText(e.getName());
-            mobile.setText(e.getMobileNo());
-            email.setText(e.getEmail());
-            switch(x){
-                case 0:
-                    PersonalFriends perF = (PersonalFriends)e;
-                    one.setText(perF.getEvents());
-                    two.setText(perF.getAContext());
-                    three.setText(perF.getADate());
-                    break;
-                case 1:
-                    Relatives rel = (Relatives)e;
-                    one.setText(rel.getBDate());
-                    two.setText(rel.getLDate());
-                    break;
-                case 2:
-                    ProfessionalFriends proF = (ProfessionalFriends)e;
-                    one.setText(proF.getCommonInterests());
-                    break;
-                case 3:
-                    CasualAcquaintances ca = (CasualAcquaintances)e;
-                    one.setText(ca.getWhenWhere());
-                    two.setVisible(true);
-                    three.setVisible(true);
-                    two.setText(ca.getCircumstances());
-                    three.setText(ca.getOtherInfo());
-                    break;
-                default:
-                    break;
-            }
-        }
-        jButton10.setVisible(true);
-        jButton11.setVisible(true);
-        if(flag)
-            jButton10.setText("Add");
-        switch(x){
-            case 0:
-                two.setVisible(true);
-                three.setVisible(true);
-                jPanel3.setBorder(BorderFactory.createTitledBorder(null, op + " Personal Friends Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("DialogInput", 1, 16)));
-                jLabel7.setText("Specific Events:");
-                jLabel8.setText("First Acquaintance Context:");
-                jLabel9.setVisible(true);
-                jLabel3.setVisible(true);
-                jLabel8.setVisible(true);
-                jLabel7.setVisible(true);
-                jScrollPane5.setVisible(true);
-                jScrollPane4.setVisible(true);
-                jLabel9.setText("<html>First Acquaintance Date:<br>(dd/mm/yyyy)</html>");
-                break;
-            case 1:
-                jPanel3.setBorder(BorderFactory.createTitledBorder(null, op + " Relatives Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("DialogInput", 1, 16)));
-                jLabel7.setText("<html>Relatives Birthday:<br> (dd/mm/yyyy)</html>");
-                jLabel8.setVisible(true);
-                jLabel7.setVisible(true);
-                two.setVisible(true);
-                jLabel8.setText("<html>Last Date met:<br> (dd/mm/yyyy)</html>");
-                jLabel9.setVisible(false);
-                three.setVisible(false);
-                jScrollPane4.setVisible(true);
-                jScrollPane5.setVisible(false);
-                break;
-            case 2:
-                jPanel3.setBorder(BorderFactory.createTitledBorder(null, op + " Professional Friends Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("DialogInput", 1, 16)));
-                jLabel7.setText("Common Interests: ");
-                jLabel7.setVisible(true);
-                jLabel8.setVisible(false);
-                two.setVisible(false);
-                jScrollPane4.setVisible(false);
-                jLabel9.setVisible(false);
-                three.setVisible(false);
-                jScrollPane5.setVisible(false);
-                break;
-            case 3:
-                jScrollPane5.setVisible(true);
-                jScrollPane4.setVisible(true);
-                two.setVisible(true);
-                three.setVisible(true);
-                jLabel7.setVisible(true);
-                jLabel8.setVisible(true);
-                jLabel9.setVisible(true);
-                jLabel7.setText("First meeting time & location:");
-                jLabel8.setText("First meeting CIrcumstances:");
-                jLabel9.setText("Other useful information:");
-                break;
-            default:
-                break;
-        }
-        if(dflag){
-            name.setEditable(false);
-            mobile.setEditable(false);
-            email.setEditable(false);
-            one.setEditable(false);
-            two.setEditable(false);
-            three.setEditable(false);
-            jButton10.setText("Back to main menu");
-            jButton11.setVisible(false);
-            jPanel3.setBorder(BorderFactory.createTitledBorder(null, "Display Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("DialogInput", 1, 16)));
-        }
+    
+    //return Acquaintance list
+    public ArrayList<ArrayList<Acquaintances>> getAllAcquantanceList(){
+        return a;
     }
+    
+    //return Acquaintance that is being selected
+    public Acquaintances getCurrentAcquaintance(){
+        if(getSelectedContactTypeIndex() >= 0 && getSelectedContactIndex() >= 0){
+            return a.get(getSelectedContactTypeIndex()).get(getSelectedContactIndex());
+        }
+        return null;
+    }
+    
+    //the index of category of the Acquaintances
+    public int getSelectedContactTypeIndex(){
+        return jList1.getSelectedIndex();
+    }
+    
+    //the index of selected row in display table
+    public int getSelectedContactIndex(){
+        return jXTable1.getSelectedRow();
+    }
+
+    public boolean getIsAddContact() {
+        return isAddContact;
+    }
+
+    public void setIsAddContact(boolean addContact) {
+        this.isAddContact = addContact;
+    }
+
+    public boolean getIsDisplayOnly() {
+        return isDisplayOnly;
+    }
+
+    public void setIsDisplayOnly(boolean displayOnly) {
+        this.isDisplayOnly = displayOnly;
+    }
+    
+    public void contactDetailsPanelSetterSetUI(){
+        contactDetailsPanelSetter.setUI();
+    }
+    
+    public void setOp(String op) {
+        this.op = op;
+    }
+    
+    public String getOp() {
+        return op;
+    }
+
+    public String getStr() {
+        return str;
+    }
+
+    public void setStr(String str) {
+        this.str = str;
+    }
+    
     public void setA(ArrayList<ArrayList<Acquaintances>> a) {
         this.a = a;
     }
-    
-    
     
     public MUI() {
         initComponents();
@@ -259,90 +186,82 @@ public class MUI extends JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new JPanel();
-        jLabel2 = new JLabel();
-        jButton1 = new JButton();
-        jButton2 = new JButton();
-        jButton3 = new JButton();
-        jButton4 = new JButton();
-        jScrollPane1 = new JScrollPane();
-        jList1 = new JList();
-        jScrollPane2 = new JScrollPane();
-        jXTable1 = new JXTable();
-        jLabel1 = new JLabel();
-        jLabel3 = new JLabel();
-        jButton5 = new JButton();
-        jButton6 = new JButton();
-        jButton7 = new JButton();
-        jButton8 = new JButton();
-        jPanel2 = new JPanel();
-        jScrollPane3 = new JScrollPane();
-        details = new JTextPane();
-        jButton9 = new JButton();
-        jPanel3 = new JPanel();
-        jLabel4 = new JLabel();
-        jLabel5 = new JLabel();
-        jLabel6 = new JLabel();
-        jLabel7 = new JLabel();
-        jLabel8 = new JLabel();
-        jLabel9 = new JLabel();
-        name = new JTextField();
-        email = new JTextField();
-        jScrollPane4 = new JScrollPane();
-        two = new JTextArea();
-        jScrollPane5 = new JScrollPane();
-        three = new JTextArea();
-        jButton10 = new JButton();
-        mobile = new JTextField();
-        jScrollPane6 = new JScrollPane();
-        one = new JTextArea();
-        jButton11 = new JButton();
-        jButton12 = new JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        mainMenuPageAddButton = new javax.swing.JButton();
+        deleteButton = new javax.swing.JButton();
+        searchButton = new javax.swing.JButton();
+        exitButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jXTable1 = new org.jdesktop.swingx.JXTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        editButton = new javax.swing.JButton();
+        viewFullDetailButton = new javax.swing.JButton();
+        readFromFileButton = new javax.swing.JButton();
+        saveAsFileButton = new javax.swing.JButton();
+        undoButton = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        details = new javax.swing.JTextPane();
+        backToMainMenuButton = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        nameTextField = new javax.swing.JTextField();
+        emailTextField = new javax.swing.JTextField();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        textAreaTwo = new javax.swing.JTextArea();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        textAreaThree = new javax.swing.JTextArea();
+        addContactPageAddButton = new javax.swing.JButton();
+        mobileTextField = new javax.swing.JTextField();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        textAreaOne = new javax.swing.JTextArea();
+        addContactPageCancelButton = new javax.swing.JButton();
 
-
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.CardLayout());
 
         jLabel2.setFont(new java.awt.Font("Ubuntu Medium", 0, 20)); // NOI18N
-        jLabel2.setHorizontalAlignment(SwingConstants.CENTER);
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("<html><u>Contact Management System</u></html>");
 
-        addBtn.setText("Add");
-        addBtn.addActionListener(new java.awt.event.ActionListener() {
+        mainMenuPageAddButton.setText("Add");
+        mainMenuPageAddButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                invoker.execute("add" ,evt);
+                mainMenuPageAddButtonActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Delete");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        deleteButton.setText("Delete");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                invoker.execute("delete", evt);
+                deleteButtonActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Search");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        searchButton.setText("Search");
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                invoker.execute("search", evt);
+                searchButtonActionPerformed(evt);
             }
         });
 
-        jButton4.setText("Exit");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        exitButton.setText("Exit");
+        exitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                invoker.execute("exit", evt);
+                exitButtonActionPerformed(evt);
             }
         });
 
-        jButton12.setText("Undo");
-        jButton12.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                invoker.undo(evt);
-            }
-        });
-
-        jList1.setModel(new AbstractListModel() {
+        jList1.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Personal Friends", "Relatives", "Professional Friends", "Casual Acquaintances" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
@@ -394,113 +313,113 @@ public class MUI extends JFrame {
         jLabel3.setFont(new java.awt.Font("Ubuntu Medium", 0, 17)); // NOI18N
         jLabel3.setText("Details:");
 
-        editBtn.setText("Edit");
-        editBtn.addActionListener(new java.awt.event.ActionListener() {
+        editButton.setText("Edit");
+        editButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                invoker.execute("edit", evt);
+                editButtonActionPerformed(evt);
             }
         });
 
-        viewFullDetailBtn.setText("View full detail");
-        viewFullDetailBtn.addActionListener(new java.awt.event.ActionListener() {
+        viewFullDetailButton.setText("View full detail");
+        viewFullDetailButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                invoker.execute("vfd", evt);
-            }
-
-        });
-
-        jButton7.setText("Read from file");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                invoker.execute("readFromFile", evt);
+                viewFullDetailButtonActionPerformed(evt);
             }
         });
 
-        jButton8.setText("Save as file");
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
+        readFromFileButton.setText("Read from file");
+        readFromFileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                invoker.execute("save", evt);
+                readFromFileButtonActionPerformed(evt);
             }
         });
 
-        GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
+        saveAsFileButton.setText("Save as file");
+        saveAsFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveAsFileButtonActionPerformed(evt);
+            }
+        });
+
+        undoButton.setText("Undo");
+        undoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                undoButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addGap(10, 10, 10)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton6)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton7))
+                                .addComponent(viewFullDetailButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(readFromFileButton))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton1, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton5, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton3, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton12, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE))
-                            .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton8)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton4, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton12, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)))
-                        .addGap(27, 27, 27))
-                    .addComponent(jLabel2)
+                                .addComponent(mainMenuPageAddButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(saveAsFileButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(exitButton, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(undoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(59, 59, 59)
-                        .addComponent(jLabel3)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 172, GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
-        jPanel1Layout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2, jButton3, jButton4, jButton5, jButton6, jButton7, jButton8,jButton12});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {deleteButton, editButton, exitButton, mainMenuPageAddButton, readFromFileButton, saveAsFileButton, searchButton, viewFullDetailButton});
 
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton2)
-                        .addComponent(jButton1)
-                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton3)
-                        .addComponent(jButton5)
-                        .addComponent(jButton12))))
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(deleteButton)
+                    .addComponent(mainMenuPageAddButton)
+                    .addComponent(editButton)
+                    .addComponent(searchButton)
+                    .addComponent(undoButton))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton4)
-                        .addComponent(jButton8))
-                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton6)
-                        .addComponent(jButton7)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(viewFullDetailButton)
+                    .addComponent(readFromFileButton)
+                    .addComponent(saveAsFileButton)
+                    .addComponent(exitButton))
                 .addGap(49, 49, 49)
-                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel3))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -509,39 +428,39 @@ public class MUI extends JFrame {
         details.setEditable(false);
         jScrollPane3.setViewportView(details);
 
-        jButton9.setText("Back to main menu");
-        jButton9.addActionListener(new java.awt.event.ActionListener() {
+        backToMainMenuButton.setText("Back to main menu");
+        backToMainMenuButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                invoker.execute("backToMainMenu", evt);
+                backToMainMenuButtonActionPerformed(evt);
             }
         });
 
-        GroupLayout jPanel2Layout = new GroupLayout(jPanel2);
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, GroupLayout.DEFAULT_SIZE, 539, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(194, 194, 194)
-                .addComponent(jButton9)
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(backToMainMenuButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton9)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(backToMainMenuButton)
                 .addGap(21, 21, 21))
         );
 
         getContentPane().add(jPanel2, "card3");
 
-        jPanel3.setBorder(BorderFactory.createTitledBorder(null, "Add Casual Acquaintance Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("DialogInput", 1, 16))); // NOI18N
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Add Casual Acquaintance Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("DialogInput", 1, 16))); // NOI18N
 
         jLabel4.setText("Name:");
 
@@ -555,12 +474,6 @@ public class MUI extends JFrame {
 
         jLabel9.setText("Other useful information:");
 
-        name.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nameActionPerformed(evt);
-            }
-        });
-
         textAreaTwo.setColumns(20);
         textAreaTwo.setRows(5);
         textAreaTwo.setAutoscrolls(false);
@@ -570,10 +483,10 @@ public class MUI extends JFrame {
         textAreaThree.setRows(5);
         jScrollPane5.setViewportView(textAreaThree);
 
-        jButton10.setText("Add");
-        jButton10.addActionListener(new java.awt.event.ActionListener() {
+        addContactPageAddButton.setText("Add");
+        addContactPageAddButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                invoker.execute("addContact", evt);
+                addContactPageAddButtonActionPerformed(evt);
             }
         });
 
@@ -581,75 +494,75 @@ public class MUI extends JFrame {
         textAreaOne.setRows(5);
         jScrollPane6.setViewportView(textAreaOne);
 
-        jButton11.setText("Cancel");
-        jButton11.addActionListener(new java.awt.event.ActionListener() {
+        addContactPageCancelButton.setText("Cancel");
+        addContactPageCancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                invoker.execute("cancel", evt);
+                addContactPageCancelButtonActionPerformed(evt);
             }
         });
 
-        GroupLayout jPanel3Layout = new GroupLayout(jPanel3);
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9)
                     .addComponent(jLabel8)
                     .addComponent(jLabel7)
                     .addComponent(jLabel6)
                     .addComponent(jLabel5)
                     .addComponent(jLabel4))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane5, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane6, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(name, GroupLayout.PREFERRED_SIZE, 262, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(mobile, GroupLayout.PREFERRED_SIZE, 262, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(email, GroupLayout.PREFERRED_SIZE, 262, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mobileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jButton10, GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton11, GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
+                        .addComponent(addContactPageAddButton, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(addContactPageCancelButton, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
                         .addGap(132, 132, 132)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(name, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel5)
-                    .addComponent(mobile, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addComponent(mobileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(email, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
-                    .addComponent(jScrollPane6, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(17, 17, 17)
                         .addComponent(jLabel8))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(17, 17, 17)
-                .addGroup(jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane5, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton10)
-                    .addComponent(jButton11))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addContactPageAddButton)
+                    .addComponent(addContactPageCancelButton))
                 .addGap(3, 3, 3))
         );
 
@@ -657,20 +570,6 @@ public class MUI extends JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
-        int index = jList1.getSelectedIndex();
-        if(index<0){
-            JOptionPane.showMessageDialog(mg, "Select a category!");
-            return;
-        }
-        jPanel1.setVisible(false);
-        jPanel3.setVisible(true);
-        selectedContactType = index;
-        isAddContact = true;
-        isDisplayOnly = false;
-        contactDetailsPanelSetter.setUI();
-    }//GEN-LAST:event_addBtnActionPerformed
 
 
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
@@ -702,47 +601,7 @@ public class MUI extends JFrame {
         }
     }//GEN-LAST:event_jList1ValueChanged
 
-    private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
-        int index = jList1.getSelectedIndex();
-        if(index<0){
-            JOptionPane.showMessageDialog(mg, "Select a category!");
-            return;
-        }
-        int tindex = jXTable1.getSelectedRow();
-        if(tindex < 0){
-            JOptionPane.showMessageDialog(mg, "Select an entry!");
-            return;
-        }
-        selectedContactIndex = tindex;
-        isAddContact = false;
-        isDisplayOnly = false;
-        selectedContactType = index;
-        contactDetailsPanelSetter.setUI();
-        jPanel1.setVisible(false);
-        jPanel3.setVisible(true);
-    }//GEN-LAST:event_editBtnActionPerformed
-
-    private void viewFullDetailBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewFullDetailBtnActionPerformed
-        int index = jList1.getSelectedIndex();
-        if(index<0){
-            JOptionPane.showMessageDialog(mg, "Select a category!");
-            return;
-        }
-        int tindex = jXTable1.getSelectedRow();
-        if(tindex < 0){
-            JOptionPane.showMessageDialog(mg, "Select an entry!");
-            return;
-        }
-        selectedContactIndex = tindex;
-        isAddContact = false;
-        selectedContactType = index;
-        jPanel1.setVisible(false);
-        jPanel3.setVisible(true);
-        isDisplayOnly = true;
-        contactDetailsPanelSetter.setUI();
-    }//GEN-LAST:event_viewFullDetailBtnActionPerformed
-
-    public void runn(){
+    public void searchNameAndDisplay(){
         String s = "<html> <b>Search results:</b><br>Found!<br><br>Acquaintance Details: <br>";
         int j = 0;
         for(int i = 0; i < a.get(0).size(); i++){
@@ -815,10 +674,6 @@ public class MUI extends JFrame {
     }
 
 
-    private void nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nameActionPerformed
-
     public boolean MobileNoChecker(String str){
         int x;
         if(str.isEmpty() || str.length() < 6 || str.length() > 15)
@@ -845,149 +700,53 @@ public class MUI extends JFrame {
             return true;
     }
         
-    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        isDisplayOnly = true;
-        String Name = name.getText();
-        if(Name.isEmpty()){
-            JOptionPane.showMessageDialog(mg, "Enter a name");
-            return;
-        }
-        String Mobile = mobile.getText();
-        if(!MobileNoChecker(Mobile)){
-            JOptionPane.showMessageDialog(mg, "Enter a valid mobile number (6-15 digits)");
-            return;
-        }
-        String Email = email.getText();
-        if(!Email.contains("@")){
-            JOptionPane.showMessageDialog(mg, "Enter a valid email");
-            return;
-        }
-        String One,Two,Three;
-        switch(selectedContactType){
-            case 0: //perF
-                One = textAreaOne.getText();
-                if(One.isEmpty() || One.length() > 300){
-                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
-                    return;
-                }
-                Two = textAreaTwo.getText();
-                if(Two.isEmpty() || Two.length() > 300){
-                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
-                    return;
-                }
-                Three = textAreaThree.getText();
-                if(!validDate(Three)){
-                    return;
-                }
-                if(Three.isEmpty() || Three.length() > 300){
-                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
-                    return;
-                }
-                PersonalFriends perF;
-                if(isAddContact)
-                    perF = new PersonalFriends();
-                else
-                    perF = (PersonalFriends)a.get(selectedContactType).get(selectedContactIndex);
-                perF.setName(Name);
-                perF.setMobileNo(Mobile);
-                perF.setEmail(Email);
-                perF.setEvents(One);
-                perF.setAContext(Two);
-                perF.setADate(Three);
-                if(isAddContact)
-                    a.get(selectedContactType).add(perF);
-                    //this.a.get(selectedContactType).add(perF);
-                break;
-            case 1: //rel
-                One = textAreaOne.getText();
-                if(One.isEmpty() || One.length() > 300){
-                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
-                    return;
-                }
-                if(!validDate(One)){
-                    return;
-                }
-                Two = textAreaTwo.getText();
-                if(Two.isEmpty() || Two.length() > 300){
-                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
-                    return;
-                }
-                if(!validDate(Two)){
-                    return;
-                }
-                Relatives rel;
-                if(isAddContact)
-                    rel = new Relatives();
-                else
-                    rel = (Relatives)a.get(selectedContactType).get(selectedContactIndex);
-                rel.setName(Name);
-                rel.setMobileNo(Mobile);
-                rel.setEmail(Email);
-                rel.setBDate(One);
-                rel.setLDate(Two);
-                if(isAddContact)
-                    a.get(selectedContactType).add(rel);
-                break;
-            case 2: //proF
-                One = textAreaOne.getText();
-                if(One.isEmpty() || One.length() > 300){
-                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
-                    return;
-                }
-                ProfessionalFriends proF;
-                if(isAddContact)
-                    proF = new ProfessionalFriends();
-                else
-                    proF = (ProfessionalFriends)a.get(selectedContactType).get(selectedContactIndex);
-                proF.setName(Name);
-                proF.setMobileNo(Mobile);
-                proF.setEmail(Email);
-                proF.setCommonInterests(One);
-                if(isAddContact)
-                    a.get(selectedContactType).add(proF);
-                break;
-                case 3: //ca
-                One = textAreaOne.getText();
-                if(One.isEmpty() || One.length() > 300){
-                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
-                    return;
-                }
-                Two = textAreaTwo.getText();
-                if(Two.isEmpty() || Two.length() > 300){
-                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
-                    return;
-                }
-                Three = textAreaThree.getText();
-                if(Three.isEmpty() || Three.length() > 300){
-                    JOptionPane.showMessageDialog(mg, "Enter a valid value ( 1 to 300 chars)");
-                    return;
-                }
-                CasualAcquaintances ca;
-                if(isAddContact)
-                    ca = new CasualAcquaintances();
-                else
-                    ca = (CasualAcquaintances)a.get(selectedContactType).get(selectedContactIndex);
-                ca.setName(Name);
-                ca.setMobileNo(Mobile);
-                ca.setEmail(Email);
-                ca.setWhenWhere(One);
-                ca.setCircumstances(Two);
-                ca.setOtherInfo(Three);
-                if(isAddContact)
-                    a.get(selectedContactType).add(ca);
-                break;
-            default:
-                break;
-        }
-        jPanel1.setVisible(true);
-        jPanel3.setVisible(false);
-        mg.setUpTableData();
-    }//GEN-LAST:event_jButton10ActionPerformed
+    private void mainMenuPageAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuPageAddButtonActionPerformed
+        invoker.execute("add" ,evt);
+    }//GEN-LAST:event_mainMenuPageAddButtonActionPerformed
 
-    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        jPanel1.setVisible(true);
-        jPanel3.setVisible(false);
-    }//GEN-LAST:event_jButton11ActionPerformed
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        invoker.execute("delete", evt);
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        invoker.execute("edit", evt);
+    }//GEN-LAST:event_editButtonActionPerformed
+
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        invoker.execute("search", evt);
+    }//GEN-LAST:event_searchButtonActionPerformed
+
+    private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoButtonActionPerformed
+        invoker.undo(evt);
+    }//GEN-LAST:event_undoButtonActionPerformed
+
+    private void viewFullDetailButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewFullDetailButtonActionPerformed
+        invoker.execute("vfd", evt);
+    }//GEN-LAST:event_viewFullDetailButtonActionPerformed
+
+    private void readFromFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_readFromFileButtonActionPerformed
+        invoker.execute("readFromFile", evt);
+    }//GEN-LAST:event_readFromFileButtonActionPerformed
+
+    private void saveAsFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsFileButtonActionPerformed
+        invoker.execute("save", evt);
+    }//GEN-LAST:event_saveAsFileButtonActionPerformed
+
+    private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
+        invoker.execute("exit", evt);
+    }//GEN-LAST:event_exitButtonActionPerformed
+
+    private void backToMainMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backToMainMenuButtonActionPerformed
+        invoker.execute("backToMainMenu", evt);
+    }//GEN-LAST:event_backToMainMenuButtonActionPerformed
+
+    private void addContactPageAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addContactPageAddButtonActionPerformed
+        invoker.execute("addContact", evt);
+    }//GEN-LAST:event_addContactPageAddButtonActionPerformed
+
+    private void addContactPageCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addContactPageCancelButtonActionPerformed
+        invoker.execute("cancel", evt);
+    }//GEN-LAST:event_addContactPageCancelButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1024,150 +783,134 @@ public class MUI extends JFrame {
         });
     }
 
+    //UI component getter and setter will be here
     public static MUI getInstance() {
         return mg;
     }
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JTextPane details;
-    private JTextField email;
-    private JButton jButton1;
-    private JButton jButton10;
-    private JButton jButton11;
-    private JButton jButton12;
-    private JButton jButton2;
-    private JButton jButton3;
-    private JButton jButton4;
-    private JButton jButton5;
-    private JButton jButton6;
-    private JButton jButton7;
-    private JButton jButton8;
-    private JButton jButton9;
-    private JLabel jLabel1;
-    private JLabel jLabel2;
-    private JLabel jLabel3;
-    private JLabel jLabel4;
-    private JLabel jLabel5;
-    private JLabel jLabel6;
-    private JLabel jLabel7;
-    private JLabel jLabel8;
-    private JLabel jLabel9;
-    private JList jList1;
-    private JPanel jPanel1;
-    private JPanel jPanel2;
-    private JPanel jPanel3;
-    private JScrollPane jScrollPane1;
-    private JScrollPane jScrollPane2;
-    private JScrollPane jScrollPane3;
-    private JScrollPane jScrollPane4;
-    private JScrollPane jScrollPane5;
-    private JScrollPane jScrollPane6;
-    private JXTable jXTable1;
-    private JTextField mobile;
-    private JTextField name;
-    private JTextArea one;
-    private JTextArea three;
-    private JTextArea two;
 
-
-    //Command DP
-
-    public JXTable getjXTable1() {
-        return jXTable1;
+    public JLabel getjLabel3() {
+        return jLabel3;
     }
 
-    public ArrayList<ArrayList<Acquaintances>> getA() {
-        return a;
+    public JLabel getjLabel4() {
+        return jLabel4;
     }
 
-    public void setMg(MUI mg) {
-        this.mg = mg;
+    public JLabel getjLabel5() {
+        return jLabel5;
     }
 
-    public void setA(ArrayList<ArrayList<Acquaintances>> a) {
-        this.a = a;
+    public JLabel getjLabel6() {
+        return jLabel6;
     }
 
-    public int getNum() {
-        return num;
+    public JLabel getjLabel7() {
+        return jLabel7;
     }
 
-    public int getX() {
-        return x;
-    }
-    public JTextField getContactEmail() {
-        return email;
+    public JLabel getjLabel8() {
+        return jLabel8;
     }
 
-    public void setTemp(ArrayList<ArrayList<Acquaintances>> temp) {
-        this.temp = temp;
+    public JLabel getjLabel9() {
+        return jLabel9;
     }
 
-    public ArrayList<ArrayList<Acquaintances>> getTemp() {
-        return temp;
-    }
-
-    public JList getJList1() {
-        return jList1;
-    }
-
-    public JPanel getPanel1() {
+    public JPanel getjPanel1() {
         return jPanel1;
     }
 
-    public JPanel getPanel2() {
+    public JPanel getjPanel2() {
         return jPanel2;
     }
 
-    public JPanel getPanel3() {
+    public JPanel getjPanel3() {
         return jPanel3;
     }
 
-    public boolean getFlag() {
-        return flag;
+    public JScrollPane getjScrollPane4() {
+        return jScrollPane4;
     }
 
-    public void setFlag(boolean flag) {
-        this.flag = flag;
+    public JScrollPane getjScrollPane5() {
+        return jScrollPane5;
     }
 
-    public void setStr(String str) {
-        this.str = str;
+    public JTextField getMobileTextField() {
+        return mobileTextField;
     }
 
-    public void setNum(int num) {
-        this.num = num;
+    public JTextField getNameTextField() {
+        return nameTextField;
+    }
+    
+    public JTextField getEmailTextField() {
+        return emailTextField;
     }
 
-    public void setDFlag(boolean dflag) {
-        this.dflag = dflag;
+    public JTextArea getTextAreaOne() {
+        return textAreaOne;
     }
 
-    public void setX (int x) {
-        this.x = x;
+    public JTextArea getTextAreaThree() {
+        return textAreaThree;
+    }
+
+    public JTextArea getTextAreaTwo() {
+        return textAreaTwo;
+    }
+
+    public JButton getjButton10() {
+        return addContactPageAddButton;
+    }
+
+    public JButton getjButton11() {
+        return addContactPageCancelButton;
     }
 
     public JTextPane getDetails() {
         return details;
     }
-
-    public JTextField getContactMobile() {
-        return mobile;
-    }
-
-    public JTextField getContactName() {
-        return name;
-    }
-
-    public JTextArea getOne() {
-        return one;
-    }
-
-    public JTextArea getThree() {
-        return three;
-    }
-
-    public JTextArea getTwo() {
-        return two;
-    }
+    
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addContactPageAddButton;
+    private javax.swing.JButton addContactPageCancelButton;
+    private javax.swing.JButton backToMainMenuButton;
+    private javax.swing.JButton deleteButton;
+    private javax.swing.JTextPane details;
+    private javax.swing.JButton editButton;
+    private javax.swing.JTextField emailTextField;
+    private javax.swing.JButton exitButton;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JList jList1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    public javax.swing.JScrollPane jScrollPane4;
+    public javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private org.jdesktop.swingx.JXTable jXTable1;
+    private javax.swing.JButton mainMenuPageAddButton;
+    private javax.swing.JTextField mobileTextField;
+    private javax.swing.JTextField nameTextField;
+    private javax.swing.JButton readFromFileButton;
+    private javax.swing.JButton saveAsFileButton;
+    private javax.swing.JButton searchButton;
+    public javax.swing.JTextArea textAreaOne;
+    public javax.swing.JTextArea textAreaThree;
+    public javax.swing.JTextArea textAreaTwo;
+    private javax.swing.JButton undoButton;
+    private javax.swing.JButton viewFullDetailButton;
     // End of variables declaration//GEN-END:variables
 }

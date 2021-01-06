@@ -1,17 +1,19 @@
 package contactmanagementsoftware.command;
 
 import contactmanagementsoftware.Acquaintances;
+import contactmanagementsoftware.singleton.Logger;
+import contactmanagementsoftware.singleton.LoggerSingleton;
 
 import java.awt.event.ActionEvent;
 import java.util.Stack;
 
 public class AddContactCommand implements Command{
     ContactReceiver contactReceiver;
-    Stack<Integer> indexes = new Stack<>();
-    Stack<Integer> tindexes = new Stack<>();
-    Stack<Boolean> flags = new Stack<>();
-    Stack<Acquaintances> acquaintances = new Stack<>();
-
+    Stack<Integer> selectedContactTypeIndexStack = new Stack<>();
+    Stack<Integer> selectedContactIndexStack = new Stack<>();
+    Stack<Boolean> isAddContactStack = new Stack<>();
+    Stack<Acquaintances> beforeEditAcquaintancesStack = new Stack<>();
+    private Logger logger = LoggerSingleton.getInstance();
 
     public AddContactCommand(ContactReceiver contactReceiver){
         this.contactReceiver = contactReceiver;
@@ -19,24 +21,33 @@ public class AddContactCommand implements Command{
 
     @Override
     public void execute(ActionEvent evt) {
-        contactReceiver.addContact();
-        indexes.push(contactReceiver.getIndex());
-        tindexes.push(contactReceiver.getTindex());
-        boolean flag = contactReceiver.getFlag();
-        flags.push(flag);
+        if(contactReceiver.addContact()){
+            selectedContactTypeIndexStack.push(contactReceiver.getSelectedContactTypeIndex());
+            selectedContactIndexStack.push(contactReceiver.getSelectedContactIndex());
+            boolean isAddContact = contactReceiver.getIsAddContact();
+            isAddContactStack.push(isAddContact);
 
-        if(!flag){
-            acquaintances.push(contactReceiver.getAcquaintance());
+            if(!isAddContact){
+                beforeEditAcquaintancesStack.push(contactReceiver.getAcquaintance());
+            }
+        }
+        else{
+            logger.warning("Error in add contact action.");
         }
     }
 
     @Override
     public void undo(ActionEvent evt) {
-        if (flags.pop()){
-            contactReceiver.deleteContact(indexes.pop());
-        } else {
-            contactReceiver.deleteContact(indexes.peek());
-            contactReceiver.addContact(indexes.pop(),tindexes.pop(), acquaintances.pop());
+        if(isAddContactStack.isEmpty() == false){
+            if (isAddContactStack.pop()){
+                contactReceiver.deleteContact(selectedContactTypeIndexStack.pop());
+            } else {
+                contactReceiver.deleteContact(selectedContactTypeIndexStack.peek());
+                contactReceiver.addContact(selectedContactTypeIndexStack.pop(),selectedContactIndexStack.pop(), beforeEditAcquaintancesStack.pop());
+            }
+        }
+        else{
+            logger.warning("Can't undo for Add Contact action. You may have not added any acquaintance yet.");
         }
     }
 }

@@ -1,5 +1,7 @@
 package contactmanagementsoftware.command;
 
+import contactmanagementsoftware.singleton.Logger;
+import contactmanagementsoftware.singleton.LoggerSingleton;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +10,7 @@ import java.util.Stack;
 public class Invoker {
     Map<String, Command> commands = new HashMap<>();
     Stack<Command> undoCommand = new Stack<>();
+    private Logger logger = LoggerSingleton.getInstance();
 
     public void setCommand(String action, Command command) {
         commands.put(action, command);
@@ -25,7 +28,7 @@ public class Invoker {
             undoCommand.pop().undo(evt);
         }
         else{
-            System.out.println("No more undo");
+            logger.warning("No more undo");
         }
     }
 }

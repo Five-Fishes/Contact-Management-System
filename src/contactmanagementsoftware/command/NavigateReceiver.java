@@ -1,59 +1,48 @@
 package contactmanagementsoftware.command;
 
 import contactmanagementsoftware.MUI;
-import org.jdesktop.swingx.JXTable;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 public class NavigateReceiver {
     static MUI mui;
-    JList jList1;
     JPanel jPanel1;
     JPanel jPanel2;
     JPanel jPanel3;
-    JXTable jXTable1;
 
     public NavigateReceiver(){
         mui = mui.getInstance();
-        jList1 = mui.getJList1();
-        jPanel1 = mui.getPanel1();
-        jPanel2 = mui.getPanel2();
-        jPanel3 = mui.getPanel3();
-        jXTable1 = mui.getjXTable1();
+        jPanel1 = mui.getjPanel1();
+        jPanel2 = mui.getjPanel2();
+        jPanel3 = mui.getjPanel3();
     }
 
     public void toAddContactForm(ActionEvent evt){
-        int index = jList1.getSelectedIndex();
-        if (index < 0) {
+        if (mui.getSelectedContactTypeIndex() < 0) {
             JOptionPane.showMessageDialog(mui, "select a category!");
             return;
         }
         jPanel1.setVisible(false);
         jPanel3.setVisible(true);
-        mui.setX(index);
-        mui.setFlag(true);
-        mui.setDFlag(false);
-        mui.setDescription();
+        mui.setIsAddContact(true);
+        mui.setIsDisplayOnly(false);
+        mui.contactDetailsPanelSetterSetUI();
     }
 
     public void toEditContactForm(){
-        int index = jList1.getSelectedIndex();
-        if(index<0){
+        if(mui.getSelectedContactTypeIndex() < 0){
             JOptionPane.showMessageDialog(mui, "Select a category!");
             return;
         }
-        int tindex = jXTable1.getSelectedRow();
-        if(tindex < 0){
+        if(mui.getSelectedContactIndex() < 0){
             JOptionPane.showMessageDialog(mui, "Select an entry!");
             return;
         }
 
-        mui.setNum(tindex);
-        mui.setFlag(false);
-        mui.setDFlag(false);
-        mui.setX(index);
-        mui.setDescription();
+        mui.setIsAddContact(false);
+        mui.setIsDisplayOnly(false);
+        mui.contactDetailsPanelSetterSetUI();
         jPanel1.setVisible(false);
         jPanel3.setVisible(true);
     }
@@ -63,7 +52,7 @@ public class NavigateReceiver {
         jPanel1.setVisible(true);
     }
 
-    public void  cancel() {
+    public void cancel() {
         jPanel1.setVisible(true);
         jPanel3.setVisible(false);
     }
