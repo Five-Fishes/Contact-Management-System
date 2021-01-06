@@ -2,21 +2,17 @@ package contactmanagementsoftware.Interpreter;
 
 public class OrExpression implements Expression {
 
-    private Expression expr1 = null;
-    private Expression expr2 = null;
+    private Expression expression1 = null;
+    private Expression expression2 = null;
 
-    public OrExpression(Expression expr1, Expression expr2) {
-        this.expr1 = expr1;
-        this.expr2 = expr2;
+    public OrExpression(Expression expression1, Expression expression2) {
+        this.expression1 = expression1;
+        this.expression2 = expression2;
     }
 
     @Override
     public boolean interpret(String context) {
-        return expr1.interpret(context) || expr2.interpret(context);
-    }
-    
-    public Expression getExpression2(){
-        return expr2;
+        return expression1.interpret(context) || expression2.interpret(context);
     }
 
 }

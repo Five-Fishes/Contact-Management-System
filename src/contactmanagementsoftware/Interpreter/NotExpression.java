@@ -2,15 +2,15 @@ package contactmanagementsoftware.Interpreter;
 
 public class NotExpression implements Expression{
 
-    private Expression expr1 = null;
+    private Expression expression = null;
 
-    public NotExpression(Expression expr1) {
-        this.expr1 = expr1;
+    public NotExpression(Expression expression) {
+        this.expression = expression;
     }
 
     @Override
     public boolean interpret(String context) {
-        return !expr1.interpret(context);
+        return !expression.interpret(context);
     }
 
 }

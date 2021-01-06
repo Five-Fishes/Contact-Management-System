@@ -36,7 +36,7 @@ public class Parser {
             } else if (matchString.length() != 0) {
                 matchString += " " + textArray[i].replaceAll("\"", "");
             } else if (textArray[i].startsWith("-")) {
-                Expression notExpression = new NotExpression(new TerminalExpression(textArray[i].replaceAll("-", "")));
+                Expression notExpression = new NotExpression(new ContainExpression(textArray[i].replaceAll("-", "")));
                 if (exprStack.isEmpty() || afterOr) {
                     exprStack.push(notExpression);
                     afterOr = false;
@@ -62,12 +62,12 @@ public class Parser {
                 orOperator = true;
                 afterOr = true;
             } else {
-                Expression terminalExpression = new TerminalExpression(textArray[i]);
+                Expression containExpression = new ContainExpression(textArray[i]);
                 if (exprStack.isEmpty() || afterOr) {
-                    exprStack.push(terminalExpression);
+                    exprStack.push(containExpression);
                     afterOr = false;
                 } else {
-                    exprStack.push(new AndExpression(exprStack.pop(), terminalExpression));
+                    exprStack.push(new AndExpression(exprStack.pop(), containExpression));
                 }
             }
         }

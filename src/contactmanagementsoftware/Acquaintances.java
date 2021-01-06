@@ -9,7 +9,7 @@ public class Acquaintances implements Serializable{
     private String Email;
     public static int number = 0;
     
-    Acquaintances(){
+    public Acquaintances(){
         number++;
     }
         
