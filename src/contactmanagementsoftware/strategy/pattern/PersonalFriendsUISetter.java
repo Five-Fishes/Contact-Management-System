@@ -28,32 +28,42 @@ public class PersonalFriendsUISetter extends UISetter {
         muiInstance.textAreaTwo.setVisible(true);
         muiInstance.textAreaThree.setVisible(true);
 
-        muiInstance.jLabel7.setText("Specific Events:");
-        muiInstance.jLabel8.setText("First Acquaintance Context:");
-        muiInstance.jLabel9.setText("<html>First Acquaintance Date:<br>(dd/mm/yyyy)</html>");
-        muiInstance.jLabel9.setVisible(true);
-        muiInstance.jLabel3.setVisible(true);
-        muiInstance.jLabel8.setVisible(true);
-        muiInstance.jLabel7.setVisible(true);
+        muiInstance.getjLabel7().setText("Specific Events:");
+        muiInstance.getjLabel8().setText("First Acquaintance Context:");
+        muiInstance.getjLabel9().setText("<html>First Acquaintance Date:<br>(dd/mm/yyyy)</html>");
+        muiInstance.getjLabel9().setVisible(true);
+        muiInstance.getjLabel3().setVisible(true);
+        muiInstance.getjLabel8().setVisible(true);
+        muiInstance.getjLabel7().setVisible(true);
         muiInstance.jScrollPane5.setVisible(true);
         muiInstance.jScrollPane4.setVisible(true);
 
-        if (muiInstance.isAddContact) {
+        muiInstance.getjButton10().setVisible(true);
+        muiInstance.getjButton11().setVisible(true);
+
+        muiInstance.getNameTextField().setEditable(!muiInstance.getIsDisplayOnly());
+        muiInstance.getMobileTextField().setEditable(!muiInstance.getIsDisplayOnly());
+        muiInstance.getEmailTextField().setEditable(!muiInstance.getIsDisplayOnly());
+        muiInstance.textAreaOne.setEditable(!muiInstance.getIsDisplayOnly());
+        muiInstance.textAreaTwo.setEditable(!muiInstance.getIsDisplayOnly());
+        muiInstance.textAreaThree.setEditable(!muiInstance.getIsDisplayOnly());
+        
+        if (muiInstance.getIsAddContact()) {
             /**
              * If we are adding new, set all input boxes content to empty
              */
-            muiInstance.name.setText("");
-            muiInstance.mobile.setText("");
-            muiInstance.email.setText("");
+            muiInstance.getNameTextField().setText("");
+            muiInstance.getMobileTextField().setText("");
+            muiInstance.getEmailTextField().setText("");
             muiInstance.textAreaOne.setText("");
             muiInstance.textAreaTwo.setText("");
             muiInstance.textAreaThree.setText("");
 
             muiInstance.op = "Add";
 
-            muiInstance.jButton10.setText("Add");
+            muiInstance.getjButton10().setText("Add");
 
-            muiInstance.jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, muiInstance.op + " Personal Friends Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("DialogInput", 1, 16)));
+            muiInstance.getjPanel3().setBorder(javax.swing.BorderFactory.createTitledBorder(null, muiInstance.op + " Personal Friends Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("DialogInput", 1, 16)));
 
         } else {
             /**
@@ -61,34 +71,24 @@ public class PersonalFriendsUISetter extends UISetter {
              * some values - If we are not adding, we can fall into edit/view
              * full details mode, therefore do another checking here
              */
-            Acquaintances selectedAcquaintance = muiInstance.a.get(muiInstance.selectedContactType).get(muiInstance.selectedContactIndex);
-            muiInstance.name.setText(selectedAcquaintance.getName());
-            muiInstance.mobile.setText(selectedAcquaintance.getMobileNo());
-            muiInstance.email.setText(selectedAcquaintance.getEmail());
+            Acquaintances selectedAcquaintance = muiInstance.getCurrentAcquaintance();
+            muiInstance.getNameTextField().setText(selectedAcquaintance.getName());
+            muiInstance.getMobileTextField().setText(selectedAcquaintance.getMobileNo());
+            muiInstance.getEmailTextField().setText(selectedAcquaintance.getEmail());
 
             PersonalFriends personalFriend = (PersonalFriends) selectedAcquaintance;
             muiInstance.textAreaOne.setText(personalFriend.getEvents());
             muiInstance.textAreaTwo.setText(personalFriend.getAContext());
             muiInstance.textAreaThree.setText(personalFriend.getADate());
 
-            muiInstance.jButton10.setVisible(true);
-            muiInstance.jButton11.setVisible(true);
-
-            muiInstance.name.setEditable(muiInstance.isDisplayOnly);
-            muiInstance.mobile.setEditable(muiInstance.isDisplayOnly);
-            muiInstance.email.setEditable(muiInstance.isDisplayOnly);
-            muiInstance.textAreaOne.setEditable(muiInstance.isDisplayOnly);
-            muiInstance.textAreaTwo.setEditable(muiInstance.isDisplayOnly);
-            muiInstance.textAreaThree.setEditable(muiInstance.isDisplayOnly);
-
-            if (muiInstance.isDisplayOnly) {
-                muiInstance.jButton10.setText("Back to main menu");
-                muiInstance.jButton11.setVisible(false);
-                muiInstance.jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Display Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("DialogInput", 1, 16)));
+            if (muiInstance.getIsDisplayOnly()) {
+                muiInstance.getjButton10().setText("Back to main menu");
+                muiInstance.getjButton11().setVisible(false);
+                muiInstance.getjPanel3().setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Display Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("DialogInput", 1, 16)));
             } else {
                 muiInstance.op = "Edit";
-                muiInstance.jButton10.setText("Save");
-                muiInstance.jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, muiInstance.op + " Personal Friends Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("DialogInput", 1, 16)));
+                muiInstance.getjButton10().setText("Save");
+                muiInstance.getjPanel3().setBorder(javax.swing.BorderFactory.createTitledBorder(null, muiInstance.op + " Personal Friends Details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("DialogInput", 1, 16)));
             }
         }
     }
