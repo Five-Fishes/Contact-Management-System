@@ -327,6 +327,7 @@ public class ContactReceiver {
         try {
             SerializationUtil.serialize(a, s);
         } catch (IOException e) {
+            logger.error("fail to serialize " + e);
             return;
         }
         JOptionPane.showMessageDialog(mui, s + " saved successfully");

@@ -9,6 +9,8 @@ import contactmanagementsoftware.Interpreter.Expression;
 import contactmanagementsoftware.Interpreter.Parser;
 import contactmanagementsoftware.command.*;
 
+import contactmanagementsoftware.singleton.Logger;
+import contactmanagementsoftware.singleton.LoggerSingleton;
 import contactmanagementsoftware.strategy.pattern.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -755,6 +757,7 @@ public class MUI extends JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        Logger logger = LoggerSingleton.getInstance();
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -767,14 +770,8 @@ public class MUI extends JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            logger.error("Fail to launch application " + ex);
         }
         //</editor-fold>
 
