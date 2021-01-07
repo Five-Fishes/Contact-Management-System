@@ -4,6 +4,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+import static contactmanagementsoftware.singleton.LoggerSingleton.isDebugModeEnabled;
+
 public class FileLogger implements Logger {
 
     @Override
@@ -34,6 +36,7 @@ public class FileLogger implements Logger {
 
     @Override
     public void debug(String msg) {
+        if (!isDebugModeEnabled()) return;
         try {
             FileWriter myWriter = new FileWriter("log.txt", true);
             myWriter.write("Contact Management System ["+ LocalDateTime.now() +"] [DEBUG]: ");

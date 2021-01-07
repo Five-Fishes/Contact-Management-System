@@ -17,6 +17,7 @@ public class Invoker {
     }
 
     public void execute(String action, ActionEvent evt) {
+        logger.debug("user carry out action: "+ action);
         boolean isSuccess = commands.get(action).execute(evt);
         if(action.equals("addContact") || action.equals("delete") || action.equals("readFromFile")){
             if(isSuccess) {
