@@ -17,9 +17,11 @@ public class Invoker {
     }
 
     public void execute(String action, ActionEvent evt) {
-        commands.get(action).execute(evt);
+        boolean isSuccess = commands.get(action).execute(evt);
         if(action.equals("addContact") || action.equals("delete") || action.equals("readFromFile")){
-            undoCommand.push(commands.get(action));
+            if(isSuccess) {
+                undoCommand.push(commands.get(action));
+            }
         }
     }
 

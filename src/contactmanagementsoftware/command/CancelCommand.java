@@ -11,8 +11,9 @@ public class CancelCommand implements Command{
     }
 
     @Override
-    public void execute(ActionEvent evt) {
+    public boolean execute(ActionEvent evt) {
         navigateReceiver.cancel();
+        return true;
     }
 
     @Override

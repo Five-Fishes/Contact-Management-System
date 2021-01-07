@@ -11,8 +11,9 @@ public class ExitCommand implements  Command{
     }
 
     @Override
-    public void execute(ActionEvent evt) {
+    public boolean execute(ActionEvent evt) {
         navigateReceiver.exit();
+        return true;
     }
 
     @Override

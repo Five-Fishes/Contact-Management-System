@@ -19,14 +19,16 @@ public class DeleteCommand implements Command{
     }
 
     @Override
-    public void execute(ActionEvent evt) {
+    public boolean execute(ActionEvent evt) {
         if(contactReceiver.deleteContact()){
             selectedContactTypeIndexStack.push(contactReceiver.getSelectedContactTypeIndex());
             selectedContactIndexStack.push(contactReceiver.getSelectedContactIndex());
             deletedAcquaintancesStack.push(contactReceiver.getAcquaintance());
+            return true;
         }
         else{
             logger.warning("Error or cancelled delete contact action.");
+            return false;
         }
     }
 

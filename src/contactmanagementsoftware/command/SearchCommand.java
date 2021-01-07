@@ -11,8 +11,9 @@ public class SearchCommand implements Command{
     }
 
     @Override
-    public void execute(ActionEvent evt) {
+    public boolean execute(ActionEvent evt) {
         contactReceiver.searchContact();
+        return true;
     }
 
     @Override

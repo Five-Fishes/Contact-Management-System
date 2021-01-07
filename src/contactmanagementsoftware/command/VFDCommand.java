@@ -4,14 +4,16 @@ import java.awt.event.ActionEvent;
 
 public class VFDCommand implements Command{
 
-    ContactReceiver contactReceiver;
+    NavigateReceiver navigateReceiver;
 
-    public VFDCommand(ContactReceiver contactReceiver) {
-        this.contactReceiver = contactReceiver;
+    public VFDCommand(NavigateReceiver navigateReceiver) {
+        this.navigateReceiver = navigateReceiver;
     }
+
     @Override
-    public void execute(ActionEvent evt) {
-        contactReceiver.viewFullDetail();
+    public boolean execute(ActionEvent evt) {
+        navigateReceiver.viewFullDetail();
+        return true;
     }
 
     @Override
