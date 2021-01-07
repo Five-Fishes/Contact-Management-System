@@ -54,12 +54,6 @@ public class ProfessionalFriends extends Acquaintances implements Serializable{
     }
 
     public void setCommonInterests(String CommonInterests) {
-        Scanner reader = new Scanner(System.in);
-        if(!CommonInterests.isEmpty())
-            this.CommonInterests = CommonInterests;
-        else{
-            System.out.println("Enter at least one character");
-            setCommonInterests(reader.nextLine());
-        }
+        this.CommonInterests = CommonInterests;
     }
 }
