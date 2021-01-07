@@ -1,7 +1,11 @@
 package contactmanagementsoftware.Interpreter;
 
+import contactmanagementsoftware.singleton.Logger;
+import contactmanagementsoftware.singleton.LoggerSingleton;
+
 public class ContainExpression implements Expression {
 
+    public static final Logger logger = LoggerSingleton.getInstance();
     private String data;
 
     public ContainExpression(String data) {
@@ -10,7 +14,9 @@ public class ContainExpression implements Expression {
 
     @Override
     public boolean interpret(String context) {
-        return context.toLowerCase().contains(data.toLowerCase());
+        boolean result = context.toLowerCase().contains(data.toLowerCase());
+        logger.debug("Contain Expression evaluated as " + result);
+        return result;
     }
 
 }

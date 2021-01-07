@@ -1,7 +1,11 @@
 package contactmanagementsoftware.Interpreter;
 
+import contactmanagementsoftware.singleton.Logger;
+import contactmanagementsoftware.singleton.LoggerSingleton;
+
 public class OrExpression implements Expression {
 
+    public static final Logger logger = LoggerSingleton.getInstance();
     private Expression expression1 = null;
     private Expression expression2 = null;
 
@@ -12,7 +16,9 @@ public class OrExpression implements Expression {
 
     @Override
     public boolean interpret(String context) {
-        return expression1.interpret(context) || expression2.interpret(context);
+        boolean result = expression1.interpret(context) || expression2.interpret(context);
+        logger.debug("Not Expression evaluated as " + result);
+        return result;
     }
 
 }
