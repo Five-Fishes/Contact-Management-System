@@ -17,6 +17,7 @@ public class Invoker {
     }
 
     public void execute(String action, ActionEvent evt) {
+        logger.debug("user carry out action: "+ action);
         commands.get(action).execute(evt);
         if(action.equals("addContact") || action.equals("delete") || action.equals("readFromFile")){
             undoCommand.push(commands.get(action));
@@ -25,6 +26,7 @@ public class Invoker {
 
     public void undo(ActionEvent evt){
         if(!undoCommand.empty()){
+            logger.debug("user carry out undo action");
             undoCommand.pop().undo(evt);
         }
         else{
