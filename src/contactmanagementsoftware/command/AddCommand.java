@@ -11,8 +11,9 @@ public class AddCommand implements Command{
     }
 
     @Override
-    public void execute(ActionEvent evt) {
-        navigateReceiver.toAddContactForm(evt);
+    public boolean execute(ActionEvent evt) {
+        navigateReceiver.toAddContactForm();
+        return true;
     }
 
     @Override
