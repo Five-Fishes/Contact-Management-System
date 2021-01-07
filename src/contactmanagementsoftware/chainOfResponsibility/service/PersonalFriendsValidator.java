@@ -2,6 +2,8 @@ package contactmanagementsoftware.chainOfResponsibility.service;
 
 import contactmanagementsoftware.Acquaintances;
 import contactmanagementsoftware.PersonalFriends;
+import contactmanagementsoftware.singleton.Logger;
+import contactmanagementsoftware.singleton.LoggerSingleton;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,12 +11,15 @@ import java.util.Date;
 
 public class PersonalFriendsValidator extends ContactValidator {
 
+    private final Logger logger = LoggerSingleton.getInstance();
+
     public PersonalFriendsValidator(ContactValidator contactValidator) {
         super(contactValidator);
     }
 
     @Override
     public boolean validateContact(Acquaintances contact) {
+        logger.debug("Personal Friends Validator validate contact");
         if (contact instanceof PersonalFriends) {
             validateADate(((PersonalFriends) contact).getADate());
             validateEvents(((PersonalFriends) contact).getEvents());

@@ -2,8 +2,12 @@ package contactmanagementsoftware.chainOfResponsibility.service;
 
 import contactmanagementsoftware.Acquaintances;
 import contactmanagementsoftware.ProfessionalFriends;
+import contactmanagementsoftware.singleton.Logger;
+import contactmanagementsoftware.singleton.LoggerSingleton;
 
 public class ProfessionalFriendsValidator extends ContactValidator {
+
+    private final Logger logger = LoggerSingleton.getInstance();
 
     public ProfessionalFriendsValidator(ContactValidator contactValidator) {
         super(contactValidator);
@@ -11,6 +15,7 @@ public class ProfessionalFriendsValidator extends ContactValidator {
 
     @Override
     public boolean validateContact(Acquaintances contact) {
+        logger.debug("Professional Friends Validator validate contact");
         if (contact instanceof ProfessionalFriends) {
             validateCommonInterests(((ProfessionalFriends) contact).getCommonInterests());
             return true;
