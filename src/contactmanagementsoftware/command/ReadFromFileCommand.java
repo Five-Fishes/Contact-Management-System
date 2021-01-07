@@ -11,7 +11,7 @@ public class ReadFromFileCommand implements Command{
 
     ContactReceiver contactReceiver;
     Stack<ArrayList<Integer>> uploadedFileIndexes = new Stack<>();
-    private Logger logger = LoggerSingleton.getInstance();
+    private final Logger logger = LoggerSingleton.getInstance();
 
     public ReadFromFileCommand(ContactReceiver contactReceiver){
         this.contactReceiver = contactReceiver;

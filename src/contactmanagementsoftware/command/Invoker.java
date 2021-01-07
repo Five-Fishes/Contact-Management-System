@@ -10,7 +10,7 @@ import java.util.Stack;
 public class Invoker {
     Map<String, Command> commands = new HashMap<>();
     Stack<Command> undoCommand = new Stack<>();
-    private Logger logger = LoggerSingleton.getInstance();
+    private final Logger logger = LoggerSingleton.getInstance();
 
     public void setCommand(String action, Command command) {
         commands.put(action, command);

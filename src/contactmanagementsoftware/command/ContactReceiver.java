@@ -20,7 +20,7 @@ public class ContactReceiver {
     Acquaintances acquaintance;
     ArrayList<Integer> uploadedFileIndexes;
     int selectedContactTypeIndex = -1, selectedContactIndex = -1;
-    private Logger logger = LoggerSingleton.getInstance();
+    private final Logger logger = LoggerSingleton.getInstance();
 
     public ContactReceiver(){
         mui = mui.getInstance();

@@ -13,7 +13,7 @@ public class AddContactCommand implements Command{
     Stack<Integer> selectedContactIndexStack = new Stack<>();
     Stack<Boolean> isAddContactStack = new Stack<>();
     Stack<Acquaintances> beforeEditAcquaintancesStack = new Stack<>();
-    private Logger logger = LoggerSingleton.getInstance();
+    private final Logger logger = LoggerSingleton.getInstance();
 
     public AddContactCommand(ContactReceiver contactReceiver){
         this.contactReceiver = contactReceiver;

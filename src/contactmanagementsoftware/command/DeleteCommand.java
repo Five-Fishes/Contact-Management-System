@@ -12,7 +12,7 @@ public class DeleteCommand implements Command{
     Stack<Integer> selectedContactTypeIndexStack = new Stack<>();
     Stack<Integer> selectedContactIndexStack = new Stack<>();
     Stack<Acquaintances> deletedAcquaintancesStack = new Stack<>();
-    private Logger logger = LoggerSingleton.getInstance();
+    private final Logger logger = LoggerSingleton.getInstance();
 
     public DeleteCommand (ContactReceiver contactReceiver) {
         this.contactReceiver = contactReceiver;
