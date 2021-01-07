@@ -11,8 +11,9 @@ public class EditCommand implements Command{
     }
 
     @Override
-    public void execute(ActionEvent evt) {
+    public boolean execute(ActionEvent evt) {
         navigateReceiver.toEditContactForm();
+        return true;
     }
 
     @Override

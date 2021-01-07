@@ -18,13 +18,15 @@ public class ReadFromFileCommand implements Command{
     }
 
     @Override
-    public void execute(ActionEvent evt) {
+    public boolean execute(ActionEvent evt) {
         if(contactReceiver.uploadContacts()){
             uploadedFileIndexes.push(contactReceiver.getUploadedFileIndexes());
             contactReceiver.cleanUploadedFileIndexes();
+            return true;
         }
         else{
             logger.warning("Unsuccessful read from file action. You may have cancel the action or there is an error occured.");
+            return false;
         }
     }
 

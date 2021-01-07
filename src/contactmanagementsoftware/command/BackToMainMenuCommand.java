@@ -11,8 +11,9 @@ public class BackToMainMenuCommand implements Command{
     }
 
     @Override
-    public void execute(ActionEvent evt) {
+    public boolean execute(ActionEvent evt) {
         navigateReceiver.backToMainMenu();
+        return true;
     }
 
     @Override

@@ -3,7 +3,6 @@ package contactmanagementsoftware.command;
 import contactmanagementsoftware.MUI;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 
 public class NavigateReceiver {
     static MUI mui;
@@ -18,7 +17,7 @@ public class NavigateReceiver {
         jPanel3 = mui.getjPanel3();
     }
 
-    public void toAddContactForm(ActionEvent evt){
+    public void toAddContactForm(){
         if (mui.getSelectedContactTypeIndex() < 0) {
             JOptionPane.showMessageDialog(mui, "select a category!");
             return;
@@ -45,6 +44,26 @@ public class NavigateReceiver {
         mui.contactDetailsPanelSetterSetUI();
         jPanel1.setVisible(false);
         jPanel3.setVisible(true);
+    }
+
+    public void viewFullDetail(){
+
+        if(mui.getSelectedContactTypeIndex() < 0){
+            JOptionPane.showMessageDialog(mui, "Select a category!");
+            return;
+        }
+
+        if(mui.getSelectedContactIndex() < 0){
+            JOptionPane.showMessageDialog(mui, "Select an entry!");
+            return;
+        }
+
+        mui.setIsAddContact(false);
+        jPanel1.setVisible(false);
+        jPanel3.setVisible(true);
+        mui.setIsDisplayOnly(true);
+        mui.contactDetailsPanelSetterSetUI();
+
     }
 
     public void backToMainMenu(){

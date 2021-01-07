@@ -20,7 +20,7 @@ public class AddContactCommand implements Command{
     }
 
     @Override
-    public void execute(ActionEvent evt) {
+    public boolean execute(ActionEvent evt) {
         if(contactReceiver.addContact()){
             selectedContactTypeIndexStack.push(contactReceiver.getSelectedContactTypeIndex());
             selectedContactIndexStack.push(contactReceiver.getSelectedContactIndex());
@@ -30,9 +30,12 @@ public class AddContactCommand implements Command{
             if(!isAddContact){
                 beforeEditAcquaintancesStack.push(contactReceiver.getAcquaintance());
             }
+
+            return true;
         }
         else{
             logger.warning("Error in add contact action.");
+            return false;
         }
     }
 
