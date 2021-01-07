@@ -3,3 +3,4 @@ build
 log.txt
 nbproject
 dist
+output.ser
