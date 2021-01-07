@@ -10,15 +10,13 @@ import contactmanagementsoftware.singleton.LoggerSingleton;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ContactReceiver {
     static MUI mui;
-    String str;
     JPanel jPanel1, jPanel2, jPanel3;
     JTextPane details;
-    ArrayList<ArrayList<Acquaintances>> a, temp;
+    ArrayList<ArrayList<Acquaintances>> a;
     Acquaintances acquaintance;
     ArrayList<Integer> uploadedFileIndexes;
     int selectedContactTypeIndex = -1, selectedContactIndex = -1;
@@ -29,11 +27,9 @@ public class ContactReceiver {
 
     public ContactReceiver(){
         mui = mui.getInstance();
-        str = mui.getStr();
         jPanel1 = mui.getjPanel1();
         jPanel2 = mui.getjPanel2();
         jPanel3 = mui.getjPanel3();
-        details = mui.getDetails();
         uploadedFileIndexes = new ArrayList<>();
         a = mui.getAllAcquantanceList();
     }
@@ -54,12 +50,62 @@ public class ContactReceiver {
         try {
             chain.validateContact(contact);
         } catch (Exception e) {
-             JOptionPane.showMessageDialog(mui, e.getMessage());
+            JOptionPane.showMessageDialog(mui, e.getMessage());
+            logger.error("Error in validating add contact details: " + e.getMessage());
             return false;
         }
-
-        if(mui.getIsAddContact())
+        
+        if(mui.getIsAddContact()){
             a.get(selectedContactTypeIndex).add(contact);
+        }
+        else{
+            selectedContactIndex = mui.getSelectedContactIndex();
+            switch(selectedContactTypeIndex){
+                case 0: //perf
+                    PersonalFriends personalFriend = (PersonalFriends)mui.getCurrentAcquaintance();
+                    acquaintance = new PersonalFriends(personalFriend);
+                    PersonalFriends updatedPersonalFriend = (PersonalFriends)contact;
+                    personalFriend.setName(updatedPersonalFriend.getName());
+                    personalFriend.setMobileNo(updatedPersonalFriend.getMobileNo());
+                    personalFriend.setEmail(updatedPersonalFriend.getEmail());
+                    personalFriend.setEvents(updatedPersonalFriend.getEvents());
+                    personalFriend.setAContext(updatedPersonalFriend.getAContext());
+                    personalFriend.setADate(updatedPersonalFriend.getADate());
+                    break;
+                case 1: //rel
+                    Relatives relative = (Relatives)mui.getCurrentAcquaintance();
+                    acquaintance = new Relatives(relative);
+                    Relatives updatedRelative = (Relatives)contact;
+                    relative.setName(updatedRelative.getName());
+                    relative.setMobileNo(updatedRelative.getMobileNo());
+                    relative.setEmail(updatedRelative.getEmail());
+                    relative.setBDate(updatedRelative.getBDate());
+                    relative.setLDate(updatedRelative.getBDate());
+                    break;
+                case 2: //proF
+                    ProfessionalFriends professionalFriend = (ProfessionalFriends)mui.getCurrentAcquaintance();
+                    acquaintance = new ProfessionalFriends(professionalFriend);
+                    ProfessionalFriends updatedProfessionalFriend = (ProfessionalFriends)contact;
+                    professionalFriend.setName(updatedProfessionalFriend.getName());
+                    professionalFriend.setMobileNo(updatedProfessionalFriend.getMobileNo());
+                    professionalFriend.setEmail(updatedProfessionalFriend.getEmail());
+                    professionalFriend.setCommonInterests(updatedProfessionalFriend.getCommonInterests());
+                    break;
+                case 3: //ca
+                    CasualAcquaintances casualAcquaintance = (CasualAcquaintances)mui.getCurrentAcquaintance();
+                    acquaintance = new CasualAcquaintances(casualAcquaintance);
+                    CasualAcquaintances updatedCasualAcquaintance = (CasualAcquaintances)contact;
+                    casualAcquaintance.setName(updatedCasualAcquaintance.getName());
+                    casualAcquaintance.setMobileNo(updatedCasualAcquaintance.getMobileNo());
+                    casualAcquaintance.setEmail(updatedCasualAcquaintance.getEmail());
+                    casualAcquaintance.setWhenWhere(updatedCasualAcquaintance.getWhenWhere());
+                    casualAcquaintance.setCircumstances(updatedCasualAcquaintance.getCircumstances());
+                    casualAcquaintance.setOtherInfo(updatedCasualAcquaintance.getOtherInfo());
+                    break;
+                default:
+                    return false;
+            }
+        }
         jPanel1.setVisible(true);
         jPanel3.setVisible(false);
         mui.setUpTableData();
@@ -105,8 +151,7 @@ public class ContactReceiver {
     }
 
     public void searchContact() {
-        JTextPane details = mui.getDetails();
-
+        details = mui.getDetails();
         String s = (String) JOptionPane.showInputDialog(
                 mui,
                 "Enter name: ",
@@ -125,6 +170,7 @@ public class ContactReceiver {
     }
 
     public boolean uploadContacts(){
+        ArrayList<ArrayList<Acquaintances>> temp;
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
         int result = fileChooser.showOpenDialog(mui);
@@ -135,8 +181,7 @@ public class ContactReceiver {
             }
             catch (ClassNotFoundException | IOException e) {
                 JOptionPane.showMessageDialog(mui, "Error");
-                logger.error(e.getMessage());
-                e.printStackTrace();
+                logger.error("error in upload contacts serialization: " + e.getMessage());
                 return false;
             }
         }
@@ -152,8 +197,7 @@ public class ContactReceiver {
             }
         }
         catch(Exception e){
-            logger.error(e.getMessage());
-            e.printStackTrace();
+            logger.error("error in upload contacts adding contacts into current list: " + e.getMessage());
             return false;
         }
         mui.setUpTableData();
@@ -190,18 +234,18 @@ public class ContactReceiver {
         try {
             SerializationUtil.serialize(a, s);
         } catch (IOException e) {
-            logger.error("fail to serialize " + e);
+            logger.error("fail to serialize in save contact: " + e.getMessage());
             return;
         }
         JOptionPane.showMessageDialog(mui, s + " saved successfully");
     }
 
     public void searchNameAndDisplay(){
+        String str = mui.getStr();
         String s = "<html> <b>Search results:</b><br>Found!<br><br>Acquaintance Details: <br>";
         int j = 0;
         Expression searchExpression = new Parser().constructParser(str);
         for(int i = 0; i < a.get(0).size(); i++){
-            //if(a.get(0).get(i).getName().matches(str)){
             if(searchExpression.interpret(a.get(0).get(i).getName())){
                 j++;
                 PersonalFriends perF = (PersonalFriends)a.get(0).get(i);
@@ -218,7 +262,6 @@ public class ContactReceiver {
         }
         j = 0;
         for(int i = 0; i < a.get(1).size(); i++){
-            //if(a.get(1).get(i).getName().matches(str)){
             if(searchExpression.interpret(a.get(1).get(i).getName())){
                 j++;
                 Relatives rel = (Relatives)a.get(1).get(i);
@@ -234,7 +277,6 @@ public class ContactReceiver {
         }
         j = 0;
         for(int i = 0; i < a.get(2).size(); i++){
-            //if(a.get(2).get(i).getName().matches(str)){
             if(searchExpression.interpret(a.get(2).get(i).getName())){
                 j++;
                 ProfessionalFriends proF = (ProfessionalFriends)a.get(2).get(i);
@@ -249,7 +291,6 @@ public class ContactReceiver {
         }
         j = 0;
         for(int i = 0; i < a.get(3).size(); i++){
-            //if(a.get(3).get(i).getName().matches(str)){
             if(searchExpression.interpret(a.get(3).get(i).getName())){
                 j++;
                 CasualAcquaintances ca = (CasualAcquaintances)a.get(3).get(i);
