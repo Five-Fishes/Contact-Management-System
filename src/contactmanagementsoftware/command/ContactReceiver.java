@@ -3,6 +3,7 @@ package contactmanagementsoftware.command;
 import contactmanagementsoftware.*;
 import contactmanagementsoftware.Interpreter.Expression;
 import contactmanagementsoftware.Interpreter.Parser;
+import contactmanagementsoftware.chainOfResponsibility.resource.ContactValidatorChain;
 import contactmanagementsoftware.singleton.Logger;
 import contactmanagementsoftware.singleton.LoggerSingleton;
 
@@ -21,6 +22,9 @@ public class ContactReceiver {
     ArrayList<Integer> uploadedFileIndexes;
     int selectedContactTypeIndex = -1, selectedContactIndex = -1;
     private final Logger logger = LoggerSingleton.getInstance();
+
+    ConstructContact contactConstructor = new ConstructContact();
+    ContactValidatorChain chain = new ContactValidatorChain();
 
     public ContactReceiver(){
         mui = mui.getInstance();
@@ -43,146 +47,18 @@ public class ContactReceiver {
         JTextArea three = mui.getTextAreaThree();
 
         mui.setIsDisplayOnly(true);
-        String name = nameTextField.getText();
-        if(name.isEmpty()){
-            JOptionPane.showMessageDialog(mui, "Enter a name");
-            return false;
-        }
-        String mobile = mobileTextField.getText();
-        if(!mui.MobileNoChecker(mobile)){
-            JOptionPane.showMessageDialog(mui, "Enter a valid mobile number (6-15 digits)");
-            return false;
-        }
-        String email = emailTextField.getText();
-        if(!email.contains("@")){
-            JOptionPane.showMessageDialog(mui, "Enter a valid email");
-            return false;
-        }
-        String One,Two,Three;
-        switch(selectedContactTypeIndex){
-            case 0: //perF
-                One = one.getText();
-                if(One.isEmpty() || One.length() > 300){
-                    JOptionPane.showMessageDialog(mui, "Enter a valid value ( 1 to 300 chars)");
-                    return false;
-                }
-                Two = two.getText();
-                if(Two.isEmpty() || Two.length() > 300){
-                    JOptionPane.showMessageDialog(mui, "Enter a valid value ( 1 to 300 chars)");
-                    return false;
-                }
-                Three = three.getText();
-                if(!mui.validDate(Three)){
-                    return false;
-                }
-                if(Three.isEmpty() || Three.length() > 300){
-                    JOptionPane.showMessageDialog(mui, "Enter a valid value ( 1 to 300 chars)");
-                    return false;
-                }
-                PersonalFriends perF;
-                if(mui.getIsAddContact())
-                    perF = new PersonalFriends();
-                else{
-                    perF = (PersonalFriends)mui.getCurrentAcquaintance();
-                    acquaintance = new PersonalFriends(perF);
-                }
-                perF.setName(name);
-                perF.setMobileNo(mobile);
-                perF.setEmail(email);
-                perF.setEvents(One);
-                perF.setAContext(Two);
-                perF.setADate(Three);
-                if(mui.getIsAddContact())
-                    a.get(selectedContactTypeIndex).add(perF);
-                break;
-            case 1: //rel
-                One = one.getText();
-                if(One.isEmpty() || One.length() > 300){
-                    JOptionPane.showMessageDialog(mui, "Enter a valid value ( 1 to 300 chars)");
-                    return false;
-                }
-                if(!mui.validDate(One)){
-                    return false;
-                }
-                Two = two.getText();
-                if(Two.isEmpty() || Two.length() > 300){
-                    JOptionPane.showMessageDialog(mui, "Enter a valid value ( 1 to 300 chars)");
-                    return false;
-                }
-                if(!mui.validDate(Two)){
-                    return false;
-                }
-                Relatives rel;
-                if(mui.getIsAddContact())
-                    rel = new Relatives();
-                else{
-                    rel = (Relatives)mui.getCurrentAcquaintance();
-                    acquaintance = new Relatives(rel);
-                }
 
-                rel.setName(name);
-                rel.setMobileNo(mobile);
-                rel.setEmail(email);
-                rel.setBDate(One);
-                rel.setLDate(Two);
-                if(mui.getIsAddContact())
-                    a.get(selectedContactTypeIndex).add(rel);
-                break;
-            case 2: //proF
-                One = one.getText();
-                if(One.isEmpty() || One.length() > 300){
-                    JOptionPane.showMessageDialog(mui, "Enter a valid value ( 1 to 300 chars)");
-                    return false;
-                }
-                ProfessionalFriends proF;
-                if(mui.getIsAddContact())
-                    proF = new ProfessionalFriends();
-                else{
-                    proF = (ProfessionalFriends)mui.getCurrentAcquaintance();
-                    acquaintance = new ProfessionalFriends(proF);
-                }
-                proF.setName(name);
-                proF.setMobileNo(mobile);
-                proF.setEmail(email);
-                proF.setCommonInterests(One);
-                if(mui.getIsAddContact())
-                    a.get(selectedContactTypeIndex).add(proF);
-                break;
-            case 3: //ca
-                One = one.getText();
-                if(One.isEmpty() || One.length() > 300){
-                    JOptionPane.showMessageDialog(mui, "Enter a valid value ( 1 to 300 chars)");
-                    return false;
-                }
-                Two = two.getText();
-                if(Two.isEmpty() || Two.length() > 300){
-                    JOptionPane.showMessageDialog(mui, "Enter a valid value ( 1 to 300 chars)");
-                    return false;
-                }
-                Three = three.getText();
-                if(Three.isEmpty() || Three.length() > 300){
-                    JOptionPane.showMessageDialog(mui, "Enter a valid value ( 1 to 300 chars)");
-                    return false;
-                }
-                CasualAcquaintances ca;
-                if(mui.getIsAddContact())
-                    ca = new CasualAcquaintances();
-                else{
-                    ca = (CasualAcquaintances)mui.getCurrentAcquaintance();
-                    acquaintance = new CasualAcquaintances(ca);
-                }
-                ca.setName(name);
-                ca.setMobileNo(mobile);
-                ca.setEmail(email);
-                ca.setWhenWhere(One);
-                ca.setCircumstances(Two);
-                ca.setOtherInfo(Three);
-                if(mui.getIsAddContact())
-                    a.get(selectedContactTypeIndex).add(ca);
-                break;
-            default:
-                break;
+        String[] arr = {nameTextField.getText(), mobileTextField.getText(), emailTextField.getText(), one.getText(), two.getText(), three.getText()};
+        Acquaintances contact = contactConstructor.createContact(selectedContactTypeIndex, arr);
+        try {
+            chain.validateContact(contact);
+        } catch (Exception e) {
+             JOptionPane.showMessageDialog(mui, e.getMessage());
+            return false;
         }
+
+        if(mui.getIsAddContact())
+            a.get(selectedContactTypeIndex).add(contact);
         jPanel1.setVisible(true);
         jPanel3.setVisible(false);
         mui.setUpTableData();

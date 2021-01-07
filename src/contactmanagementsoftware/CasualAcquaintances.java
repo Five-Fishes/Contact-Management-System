@@ -59,13 +59,7 @@ public class CasualAcquaintances extends Acquaintances implements Serializable{
     }
 
     public void setWhenWhere(String WhenWhere) {
-        Scanner reader = new Scanner(System.in);
-        if(!WhenWhere.isEmpty())
-            this.WhenWhere = WhenWhere;
-        else{
-            System.out.println("Enter atleast one character");
-            setWhenWhere(reader.nextLine());
-        }
+        this.WhenWhere = WhenWhere;
     }
 
     public String getCircumstances() {
@@ -73,13 +67,7 @@ public class CasualAcquaintances extends Acquaintances implements Serializable{
     }
 
     public void setCircumstances(String Circumstances) {
-        Scanner reader = new Scanner(System.in);
-        if(!Circumstances.isEmpty())
-            this.Circumstances = Circumstances;
-        else{
-            System.out.println("Enter atleast one character");
-            setCircumstances(reader.nextLine());
-        }
+        this.Circumstances = Circumstances;
     }
 
     public String getOtherInfo() {
@@ -87,12 +75,6 @@ public class CasualAcquaintances extends Acquaintances implements Serializable{
     }
 
     public void setOtherInfo(String OtherInfo) {
-        Scanner reader = new Scanner(System.in);
-        if(!OtherInfo.isEmpty())
-            this.OtherInfo = OtherInfo;
-        else{
-            System.out.println("Enter atleast one character");
-            setOtherInfo(reader.nextLine());
-        }
+        this.OtherInfo = OtherInfo;
     }
 }
