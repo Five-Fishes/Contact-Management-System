@@ -2,6 +2,8 @@ package contactmanagementsoftware.chainOfResponsibility.service;
 
 import contactmanagementsoftware.Acquaintances;
 import contactmanagementsoftware.Relatives;
+import contactmanagementsoftware.singleton.Logger;
+import contactmanagementsoftware.singleton.LoggerSingleton;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,12 +12,15 @@ import java.util.Date;
 
 public class RelativesValidator extends ContactValidator {
 
+    private final Logger logger = LoggerSingleton.getInstance();
+
     public RelativesValidator(ContactValidator contactValidator) {
         super(contactValidator);
     }
 
     @Override
     public boolean validateContact(Acquaintances contact) {
+        logger.debug("Relatives Validator validate contact");
         if (contact instanceof Relatives) {
             validateLDate(((Relatives) contact).getLDate());
             validateBDate(((Relatives) contact).getBDate());

@@ -2,8 +2,12 @@ package contactmanagementsoftware.chainOfResponsibility.service;
 
 import contactmanagementsoftware.Acquaintances;
 import contactmanagementsoftware.CasualAcquaintances;
+import contactmanagementsoftware.singleton.Logger;
+import contactmanagementsoftware.singleton.LoggerSingleton;
 
 public class CasualAcquaintanceValidator extends ContactValidator {
+
+    private final Logger logger = LoggerSingleton.getInstance();
 
     public CasualAcquaintanceValidator(ContactValidator contactValidator) {
         super(contactValidator);
@@ -11,6 +15,7 @@ public class CasualAcquaintanceValidator extends ContactValidator {
 
     @Override
     public boolean validateContact(Acquaintances contact) {
+        logger.debug("Casual Acquaintance validator validate contact");
         if (contact instanceof CasualAcquaintances) {
             validateCircumstances(((CasualAcquaintances) contact).getCircumstances());
             validateOtherInfo(((CasualAcquaintances) contact).getOtherInfo());

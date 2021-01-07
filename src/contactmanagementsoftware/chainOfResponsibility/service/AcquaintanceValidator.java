@@ -1,14 +1,20 @@
 package contactmanagementsoftware.chainOfResponsibility.service;
 
 import contactmanagementsoftware.Acquaintances;
+import contactmanagementsoftware.singleton.Logger;
+import contactmanagementsoftware.singleton.LoggerSingleton;
 
 public class AcquaintanceValidator extends ContactValidator {
+
+    private final Logger logger = LoggerSingleton.getInstance();
+
     public AcquaintanceValidator(ContactValidator contactValidator) {
         super(contactValidator);
     }
 
     @Override
     public boolean validateContact(Acquaintances contact) {
+        logger.debug("Acquaintance validator validate contact");
         validateName(contact.getName());
         validateEmail(contact.getEmail());
         validateMobileNumber(contact.getMobileNo());
