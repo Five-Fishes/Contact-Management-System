@@ -1,19 +1,18 @@
-package contactmanagementsoftware.service.ChainOfResponsibility;
+package contactmanagementsoftware.chainOfResponsibility.service;
 
-import contactmanagementsoftware.entity.Contact;
+import contactmanagementsoftware.Acquaintances;
+import contactmanagementsoftware.ProfessionalFriends;
 
 public class ProfessionalFriendsValidator extends ContactValidator {
-    private static final String CONTACT_TYPE = "class contactmanagementsoftware.ProfessionalFriends";
 
     public ProfessionalFriendsValidator(ContactValidator contactValidator) {
         super(contactValidator);
     }
 
     @Override
-    public boolean validateContact(Contact contact) {
-        // TODO: use instance of class
-        if (contact.getClass().toString().equalsIgnoreCase(CONTACT_TYPE)) {
-            validateCommonInterests(contact.getCommonInterests());
+    public boolean validateContact(Acquaintances contact) {
+        if (contact instanceof ProfessionalFriends) {
+            validateCommonInterests(((ProfessionalFriends) contact).getCommonInterests());
             return true;
         }
         return super.validateContact(contact);

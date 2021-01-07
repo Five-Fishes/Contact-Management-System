@@ -1,6 +1,7 @@
-package contactmanagementsoftware.service.ChainOfResponsibility;
+package contactmanagementsoftware.chainOfResponsibility.service;
 
-import contactmanagementsoftware.entity.Contact;
+import contactmanagementsoftware.Acquaintances;
+import contactmanagementsoftware.Relatives;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,17 +9,16 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class RelativesValidator extends ContactValidator {
-    private static final String CONTACT_TYPE = "class contactmanagementsoftware.Relatives";
 
     public RelativesValidator(ContactValidator contactValidator) {
         super(contactValidator);
     }
 
     @Override
-    public boolean validateContact(Contact contact) {
-        if (contact.getClass().toString().equalsIgnoreCase(CONTACT_TYPE)) {
-            validateLDate(contact.getLDate());
-            validateBDate(contact.getBDate());
+    public boolean validateContact(Acquaintances contact) {
+        if (contact instanceof Relatives) {
+            validateLDate(((Relatives) contact).getLDate());
+            validateBDate(((Relatives) contact).getBDate());
             return true;
         }
         return super.validateContact(contact);

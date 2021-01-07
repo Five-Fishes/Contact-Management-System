@@ -1,20 +1,20 @@
-package contactmanagementsoftware.service.ChainOfResponsibility;
+package contactmanagementsoftware.chainOfResponsibility.service;
 
-import contactmanagementsoftware.entity.Contact;
+import contactmanagementsoftware.Acquaintances;
+import contactmanagementsoftware.CasualAcquaintances;
 
 public class CasualAcquaintanceValidator extends ContactValidator {
-    private static final String CONTACT_TYPE = "class contactmanagementsoftware.CasualAcquaintance";
 
     public CasualAcquaintanceValidator(ContactValidator contactValidator) {
         super(contactValidator);
     }
 
     @Override
-    public boolean validateContact(Contact contact) {
-        if (contact.getClass().toString().equalsIgnoreCase(CONTACT_TYPE)) {
-            validateCircumstances(contact.getCircumstances());
-            validateOtherInfo(contact.getOtherInfo());
-            validateWhenWhere(contact.getWhenWhere());
+    public boolean validateContact(Acquaintances contact) {
+        if (contact instanceof CasualAcquaintances) {
+            validateCircumstances(((CasualAcquaintances) contact).getCircumstances());
+            validateOtherInfo(((CasualAcquaintances) contact).getOtherInfo());
+            validateWhenWhere(((CasualAcquaintances) contact).getWhenWhere());
             return true;
         }
         return super.validateContact(contact);

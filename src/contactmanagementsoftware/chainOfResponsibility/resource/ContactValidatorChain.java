@@ -1,7 +1,7 @@
-package contactmanagementsoftware.resource.ChainOfResponsibility;
+package contactmanagementsoftware.chainOfResponsibility.resource;
 
-import contactmanagementsoftware.entity.Contact;
-import contactmanagementsoftware.service.ChainOfResponsibility.*;
+import contactmanagementsoftware.Acquaintances;
+import contactmanagementsoftware.chainOfResponsibility.service.*;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class ContactValidatorChain {
         }
     }
 
-    public void validateContact(Contact contact) {
+    public void validateContact(Acquaintances contact) {
         chain.validateContact(contact);
     }
 }

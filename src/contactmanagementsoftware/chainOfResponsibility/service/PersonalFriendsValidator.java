@@ -1,24 +1,24 @@
-package contactmanagementsoftware.service.ChainOfResponsibility;
+package contactmanagementsoftware.chainOfResponsibility.service;
 
-import contactmanagementsoftware.entity.Contact;
+import contactmanagementsoftware.Acquaintances;
+import contactmanagementsoftware.PersonalFriends;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class PersonalFriendsValidator extends ContactValidator {
-    private static final String CONTACT_TYPE = "class contactmanagementsoftware.PersonalFriends";
 
     public PersonalFriendsValidator(ContactValidator contactValidator) {
         super(contactValidator);
     }
 
     @Override
-    public boolean validateContact(Contact contact) {
-        if (contact.getClass().toString().equalsIgnoreCase(CONTACT_TYPE)) {
-            validateADate(contact.getADate());
-            validateEvents(contact.getEvents());
-            validateAContext(contact.getAContext());
+    public boolean validateContact(Acquaintances contact) {
+        if (contact instanceof PersonalFriends) {
+            validateADate(((PersonalFriends) contact).getADate());
+            validateEvents(((PersonalFriends) contact).getEvents());
+            validateAContext(((PersonalFriends) contact).getAContext());
             return true;
         }
         return super.validateContact(contact);

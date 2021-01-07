@@ -1,6 +1,6 @@
-package contactmanagementsoftware.service.ChainOfResponsibility;
+package contactmanagementsoftware.chainOfResponsibility.service;
 
-import contactmanagementsoftware.entity.Contact;
+import contactmanagementsoftware.Acquaintances;
 
 public abstract class ContactValidator {
 
@@ -10,7 +10,7 @@ public abstract class ContactValidator {
         this.contactValidator = contactValidator;
     }
 
-    public boolean validateContact(Contact contact) {
+    public boolean validateContact(Acquaintances contact) {
         if (contactValidator != null) {
             contactValidator.validateContact(contact);
         }

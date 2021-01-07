@@ -1,16 +1,15 @@
 package test;
 
-import contactmanagementsoftware.entity.Contact;
-import contactmanagementsoftware.resource.ChainOfResponsibility.ContactValidatorChain;
+import contactmanagementsoftware.Acquaintances;
+import contactmanagementsoftware.chainOfResponsibility.resource.ContactValidatorChain;
 
 public class TestChainOfResponsibility {
     public static void main(String[] args) {
         ContactValidatorChain chain = new ContactValidatorChain();
-        Contact contact = new Contact();
+        Acquaintances contact = new Acquaintances();
         contact.setName("Yaw Jian Hao");
         contact.setEmail("howardyjh@siswa.um.edu.my");
         contact.setMobileNo("0123456789");
-        contact.setAContext("Meet in office");
 
         System.out.println("Start Validate");
         try {

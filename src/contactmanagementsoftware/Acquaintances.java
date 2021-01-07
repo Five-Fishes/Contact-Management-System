@@ -49,6 +49,7 @@ public class Acquaintances implements Serializable{
     
     
     public void setMobileNo(String MobileNo){
+        this.MobileNo = MobileNo;
         Scanner reader = new Scanner(System.in);
         if(MobileNoChecker(MobileNo) && MobileNo.length()>=6 && MobileNo.length()<=15)
             this.MobileNo = MobileNo;

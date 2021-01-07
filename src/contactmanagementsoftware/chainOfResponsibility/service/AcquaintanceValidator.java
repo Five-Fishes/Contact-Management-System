@@ -1,6 +1,6 @@
-package contactmanagementsoftware.service.ChainOfResponsibility;
+package contactmanagementsoftware.chainOfResponsibility.service;
 
-import contactmanagementsoftware.entity.Contact;
+import contactmanagementsoftware.Acquaintances;
 
 public class AcquaintanceValidator extends ContactValidator {
     public AcquaintanceValidator(ContactValidator contactValidator) {
@@ -8,7 +8,7 @@ public class AcquaintanceValidator extends ContactValidator {
     }
 
     @Override
-    public boolean validateContact(Contact contact) {
+    public boolean validateContact(Acquaintances contact) {
         validateName(contact.getName());
         validateEmail(contact.getEmail());
         validateMobileNumber(contact.getMobileNo());
@@ -25,7 +25,7 @@ public class AcquaintanceValidator extends ContactValidator {
         if (email == null || email.trim().length() < 1) {
             throw new IllegalArgumentException("Email cannot be empty");
         }
-        if (! (email.contains("@") && email.contains(".")) ) {
+        if (! ((email.contains("@") && email.contains("."))) ) {
             throw new IllegalArgumentException("Please enter a validate email");
         }
     }
