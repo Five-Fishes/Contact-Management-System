@@ -13,6 +13,17 @@ public class LoggerSingleton {
         return consoleLogger;
     }
 
+    public static boolean isDebugModeEnabled() {
+        Properties p = new Properties();
+        try {
+            p.load(ClassLoader.getSystemResourceAsStream("logger.properties"));
+            String fileLoggingValue = p.getProperty("debug");
+            return fileLoggingValue.equalsIgnoreCase("ON");
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
     public static boolean isFileLoggingEnabled() {
         Properties p = new Properties();
         try {
