@@ -146,6 +146,7 @@ public class ContactReceiver {
     }
 
     public void deleteContact(int selectedContactTypeIndex){
+        System.out.println("delete: " + selectedContactTypeIndex + " position: " +  (a.get(selectedContactTypeIndex).size() - 1));
         a.get(selectedContactTypeIndex).remove(a.get(selectedContactTypeIndex).size() - 1);
         mui.setUpTableData();
     }
@@ -154,7 +155,10 @@ public class ContactReceiver {
         details = mui.getDetails();
         String s = (String) JOptionPane.showInputDialog(
                 mui,
-                "Enter name: ",
+                "Enter name: \n"
+                        + "(use \" for completely match,\n"
+                        + " use - for not include this name,\n"
+                        + " use | to chain the names to search)",
                 "Input",
                 JOptionPane.PLAIN_MESSAGE,
                 null,
@@ -193,6 +197,7 @@ public class ContactReceiver {
                 for(int j = 0; j < temp.get(i).size(); j++){
                     a.get(i).add(temp.get(i).get(j));
                     uploadedFileIndexes.add(i);
+                    System.out.println("in: " + i + " j: " + j);
                 }
             }
         }
@@ -242,9 +247,13 @@ public class ContactReceiver {
 
     public void searchNameAndDisplay(){
         String str = mui.getStr();
+        Expression searchExpression = new Parser().constructParser(str);
+        if(searchExpression == null){
+            details.setText("<html>Search Expression could not be constructed</html>");
+            return;
+        }
         String s = "<html> <b>Search results:</b><br>Found!<br><br>Acquaintance Details: <br>";
         int j = 0;
-        Expression searchExpression = new Parser().constructParser(str);
         for(int i = 0; i < a.get(0).size(); i++){
             if(searchExpression.interpret(a.get(0).get(i).getName())){
                 j++;
@@ -331,7 +340,7 @@ public class ContactReceiver {
     }
 
     public void cleanUploadedFileIndexes(){
-        uploadedFileIndexes.clear();
+        uploadedFileIndexes = new ArrayList<>();
     }
 
     public boolean getIsAddContact() {
