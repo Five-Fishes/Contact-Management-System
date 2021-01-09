@@ -1,5 +1,7 @@
 package contactmanagementsoftware;
 
+import javafx.beans.binding.When;
+
 import java.io.Serializable;
 import java.util.Scanner;
 
@@ -9,8 +11,17 @@ public class CasualAcquaintances extends Acquaintances implements Serializable{
     private String OtherInfo;
     public static int numberCA = 0;
     
-    CasualAcquaintances(){
+    public CasualAcquaintances(){
         numberCA++;
+    }
+
+    public CasualAcquaintances(CasualAcquaintances ca){
+        super.setName(ca.getName());
+        super.setMobileNo(ca.getMobileNo());
+        super.setEmail(ca.getEmail());
+        WhenWhere = ca.getWhenWhere();
+        Circumstances = ca.getCircumstances();
+        OtherInfo = ca.OtherInfo;
     }
     
     @Override
@@ -48,13 +59,7 @@ public class CasualAcquaintances extends Acquaintances implements Serializable{
     }
 
     public void setWhenWhere(String WhenWhere) {
-        Scanner reader = new Scanner(System.in);
-        if(!WhenWhere.isEmpty())
-            this.WhenWhere = WhenWhere;
-        else{
-            System.out.println("Enter atleast one character");
-            setWhenWhere(reader.nextLine());
-        }
+        this.WhenWhere = WhenWhere;
     }
 
     public String getCircumstances() {
@@ -62,13 +67,7 @@ public class CasualAcquaintances extends Acquaintances implements Serializable{
     }
 
     public void setCircumstances(String Circumstances) {
-        Scanner reader = new Scanner(System.in);
-        if(!Circumstances.isEmpty())
-            this.Circumstances = Circumstances;
-        else{
-            System.out.println("Enter atleast one character");
-            setCircumstances(reader.nextLine());
-        }
+        this.Circumstances = Circumstances;
     }
 
     public String getOtherInfo() {
@@ -76,12 +75,6 @@ public class CasualAcquaintances extends Acquaintances implements Serializable{
     }
 
     public void setOtherInfo(String OtherInfo) {
-        Scanner reader = new Scanner(System.in);
-        if(!OtherInfo.isEmpty())
-            this.OtherInfo = OtherInfo;
-        else{
-            System.out.println("Enter atleast one character");
-            setOtherInfo(reader.nextLine());
-        }
+        this.OtherInfo = OtherInfo;
     }
 }

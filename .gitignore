@@ -1,2 +1,6 @@
 build
 .idea
+log.txt
+nbproject
+dist
+output.ser

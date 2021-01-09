@@ -20,6 +20,7 @@ public class ContactManagementSoftware implements Serializable{
         a.add(ca1);
         mg.setMg(mg);
         mg.setA(a);
+        mg.loadCommands();
         mg.setVisible(true);
     }
 }

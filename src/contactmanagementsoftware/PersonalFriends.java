@@ -11,10 +11,19 @@ public class PersonalFriends extends Acquaintances implements Serializable{
     private static Scanner reader = new Scanner(System.in);
     public static int numberPerF = 0;
     
-    PersonalFriends(){
+    public PersonalFriends(){
         numberPerF++;
     }
-    
+
+    public PersonalFriends(PersonalFriends perF){
+        super.setName(perF.getName());
+        super.setMobileNo(perF.getMobileNo());
+        super.setEmail(perF.getEmail());
+        AContext = perF.getAContext();
+        ADate = perF.getADate();
+        Events = perF.getEvents();
+    }
+
     @Override
     public String getName() {
         return super.getName();
@@ -50,13 +59,7 @@ public class PersonalFriends extends Acquaintances implements Serializable{
     }
 
     public void setAContext(String AContext) {
-        Scanner reader = new Scanner(System.in);
-        if(!AContext.isEmpty())
-            this.AContext = AContext;
-        else{
-            System.out.println("Enter at least one character");
-            setAContext(reader.nextLine());
-        }
+        this.AContext = AContext;
     }
 
     public String getADate() {
@@ -72,12 +75,6 @@ public class PersonalFriends extends Acquaintances implements Serializable{
     }
 
     public void setEvents(String Events) {
-        Scanner reader = new Scanner(System.in);
-        if(!Events.isEmpty())
-            this.Events = Events;
-        else{
-            System.out.println("Enter at least one character");
-            setEvents(reader.nextLine());
-        }
+        this.Events = Events;
     }
 }

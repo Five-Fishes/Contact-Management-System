@@ -8,10 +8,17 @@ public class ProfessionalFriends extends Acquaintances implements Serializable{
     private String CommonInterests;
     public static int numberProF = 0;
     
-    ProfessionalFriends(){
+    public ProfessionalFriends(){
         numberProF++;
     }
-    
+
+    public ProfessionalFriends(ProfessionalFriends proF){
+        super.setName(proF.getName());
+        super.setMobileNo(proF.getMobileNo());
+        super.setEmail(proF.getEmail());
+        CommonInterests = proF.getCommonInterests();
+    }
+
     @Override
     public String getName() {
         return super.getName();
@@ -47,12 +54,6 @@ public class ProfessionalFriends extends Acquaintances implements Serializable{
     }
 
     public void setCommonInterests(String CommonInterests) {
-        Scanner reader = new Scanner(System.in);
-        if(!CommonInterests.isEmpty())
-            this.CommonInterests = CommonInterests;
-        else{
-            System.out.println("Enter at least one character");
-            setCommonInterests(reader.nextLine());
-        }
+        this.CommonInterests = CommonInterests;
     }
 }
